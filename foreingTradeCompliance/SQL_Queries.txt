@@ -1,0 +1,42 @@
+
+-- Todas las empresas con todos sus tipos y todas sus causales
+
+	select 
+	co.id , co.company_name, impexp.id,  impexp.imp_exp_type_name, c.id, c.causal_description 
+	-- *
+	from company co
+	join companies_impexptypes com
+	on co.id=com.company_id
+	join imp_exp_type impexp
+	on com.impexptype_id = impexp.id
+	join impexptypes_causales impcau
+	on com.impexptype_id = impcau.impexptype_id
+	join causal c
+	on impcau.causal_id = c.id
+	order by co.id,impexp.id,c.id
+
+-- Todos los cumplimientos
+
+	SELECT 
+	-- *
+	company_id, impexptype_id, causal_id , status_id , compliance_evaluation_date, effective_date_for_compliance , created, updated
+	FROM cucoex.compliance
+	order by company_id,impexptype_id,causal_id , status_id;
+
+
+JPA JOINs
+
+public void whenMultipleEntitiesAreListedWithJoin_ThenCreatesMultipleJoins() {
+    TypedQuery<Phone> query
+      = entityManager.createQuery(
+          "SELECT ph FROM Employee e
+      JOIN e.department d
+      JOIN e.phones ph
+      WHERE d.name IS NOT NULL", Phone.class);
+    List<Phone> resultList = query.getResultList();
+    
+    // Assertions...
+}
+
+
+No default constructor for entity:  : com.cucoex.entity.Compliance

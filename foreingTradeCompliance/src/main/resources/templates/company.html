@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/mdb-favicon.ico"/>
+    
+  <title>CuCoEx - Cumplimiento al comercio exterior</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">  
+  <link href="/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
+  <!-- Material Design Bootstrap -->
+  <link href="/css/mdb.min.css" rel="stylesheet" th:href="@{/css/mdb.min.css}">
+  <!-- Your custom styles (optional) -->
+  <link href="/css/style.min.css" rel="stylesheet" th:href="@{/css/style.min.css}"> 
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  
+   <!-- Custom fonts for this template-->
+   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+ 
+   <link href="css/addons/datatables2.min.css" rel="stylesheet">
+	
+	<link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  
+  <!-- Scrool de listas y formas -->
+  <link href="css/style.css" rel="stylesheet">
+ 
+
+
+</head>
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+	<div th:include="side_bar.html" th:remove="tag"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+       <div th:include="header_main.html" th:remove="tag"></div>
+        <!-- End of Topbar -->
+    
+        <!-- Begin Page Content Company list -->
+  
+       <div th:include="catCompany/CompanyCrud.html" th:remove="tag"></div>
+       
+
+     <!-- End of Main Content -->
+
+      <!-- Footer -->
+       <div th:include="footer.html" th:remove="tag"></div>
+       
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <div th:include="footer_main.html" th:remove="tag"></div>
+  
+ <script type="text/javascript">
+ $(document).ready(function () {
+	 $('#dtCompany').DataTable({
+	 "scrollX": true,
+	 "scrollY": 350,
+	 });
+	 $('.dataTables_length').addClass('bs-select');
+	 }); 
+ 
+
+ 
+ </script>
+ 
+
+</body>
+
+</html>

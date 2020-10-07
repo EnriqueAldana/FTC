@@ -1,0 +1,32 @@
+
+<table id="dt-basic-checkbox" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="th-sm">Id
+      </th>
+      <th class="th-sm">Descripcion
+      </th>
+      
+    </tr>
+  </thead>
+  <tbody>
+  
+  							<tr th:each="instruction: ${instructionList}">
+								<td th:text="${instruction.id}"></td>
+								<td th:text="${instruction.instructionDescription}"></td>
+							</tr>
+							
+    
+  </tbody>
+  <tfoot>
+   <tr>
+      <th class="th-sm">Id
+      </th>
+      <th class="th-sm">Descripcion
+      </th>
+      
+    </tr>
+  </tfoot>
+</table>
+
+ 

@@ -1,0 +1,49 @@
+    
+    
+    Estilos
+      <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.standalone.css} "/>  
+     <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/startbootstrap-sb-admin-2/4.0.6/css/sb-admin-2.min.css} "/>
+     
+
+
+	 <link th:rel="stylesheet" th:href="@{webjars/mdbootstrap-bootstrap-material-design/4.8.8/css/mdb.min.css} "/>
+	 <link th:rel="stylesheet" th:href="@{webjars/mdbootstrap-bootstrap-material-design/4.8.8/css/style.min.css} "/>
+	 <link th:rel="stylesheet" th:href="@{webjars/startbootstrap-sb-admin-2/4.0.6/vendor/datatables/dataTables.bootstrap4.min.css} "/>
+	 <link href="css/addons/datatables2.min.css" rel="stylesheet">
+	  
+     
+     JS
+     
+	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/sb-admin-2.min.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/chart.js/Chart.min.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/chart-area-demo.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/chart-pie-demo.js}"></script>
+
+
+	<script th:src="@{/webjars/mdbootstrap-bootstrap-material-design/4.8.8/js/mdb.min.js}"></script>
+  	<script th:src="@{/webjars/mdbootstrap-bootstrap-material-design/4.8.8/js/addons/datatables.min.js}"></script>
+	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/datatables/jquery.dataTables.min.js}"></script>
+  	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+   	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript" src="js/addons/datatables2.min.js"></script>
+  	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/sb-admin-2.min.js}"></script>
+  
+  
+  
+  
+  
+  
+  
+  Ventyanas modales.
+  
+  https://obedalvarado.pw/blog/como-enviar-valor-a-ventana-modal-bootstrap-usando-php-mysql-y-jquery/
+  

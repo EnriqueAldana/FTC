@@ -1,0 +1,189 @@
+
+<section class="form-elegant scrollbar-light-blue">
+
+
+<!-- <form class="border border-light p-5" th:object="${companyForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editUser} :@{/companyForm})" method="post"> -->
+<form class="needs-validation" novalidate role="form" autocomplete="off"  th:object="${complianceForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editAssignedCausal} :@{/complianceForm})" method="post">
+
+<input class="form-control" type=hidden th:field="${complianceForm.id}"  th:if="${editMode}">
+
+
+
+  <div class="card">
+
+	    <!-- Card header -->
+	    <div class="card-header" role="tab" id="heading4">
+
+	        <h4 class="mb-0 mt-3 blue-text">
+	          Datos generales de la causal asignada. 
+	        </h4>
+	      </div>
+	    <!-- Card body -->
+	   
+	      <div class="card-body pt-0">
+	         <!-- <div th:include="catCompany/company-data.html" th:remove="tag"></div> -->
+	          <div class="card-body pt-0">
+	         <!-- <div th:include="catCompany/company-data.html" th:remove="tag"></div> -->
+			         <div class="form-group row">
+		   					<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Causal</label>
+				   			<div class="col-lg-9">
+				   			 	<p class="card-text" th:text="${complianceForm.causal.causalDescription}"> </p>
+				   			</div> 
+				   	</div>   
+		   			 <div class="form-group row">
+		   					<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Cumplimiento</label>
+		   					<div class="col-lg-9">
+		   			 			<p class="card-text" th:text="${complianceForm.causal.causalCumplimiento}"> </p>
+		   			 			</div> 
+		   			</div> 
+		   			
+
+
+ 
+		<p>Date: <input type="text" id="datepicker"></p>
+ 	
+    	</div>
+	      </div>
+  </div>
+  <!-- Accordion card -->
+
+  <!-- Accordion card -->
+  <div class="card">
+    	<!-- Card header -->
+	    <div class="card-header" role="tab" id="heading4">
+	        <h4 class="mb-0 mt-3 blue-text">
+	          Lista de instrucciones 
+	        </h4>
+    	</div>
+
+    <!-- Card body -->
+    
+      <div class="card-body pt-0">
+        <!-- <div th:include="catCompany/company-configuration-impexptype.html" th:remove="tag"></div> -->
+        
+        					<div class="form-group row">
+		   							<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Lista de instrucciones para el cumplimiento</label>
+						   			<div class="col-lg-9">
+						   			 	<div th:include="assignedCausals/instructionList.html" th:remove="tag"></div>
+						   			</div> 
+				   			</div> 
+      </div>
+  
+ </div>
+
+ <div class="card">
+    	<!-- Card header -->
+	    <div class="card-header" role="tab" id="heading4">
+	        <h4 class="mb-0 mt-3 blue-text">
+	          Configuracion de la causal 
+	        </h4>
+    	</div>
+
+    <!-- Card body -->
+    
+      <div class="card-body pt-0">
+        <!-- <div th:include="catCompany/company-configuration-impexptype.html" th:remove="tag"></div> -->
+        
+        					<div class="form-group row">
+        					<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Estado de la causal</label>
+		        					<div class="custom-control custom-switch">
+								   			 	<input type="checkbox" class="custom-control-input"  th:field="${complianceForm.isCompliance}" th:disabled="${disableFields}"  id="isCompliance" >
+				 						 		<label class="custom-control-label" for="isCompliance" >¿La causal esta conforme?</label>
+				 						 		<div class="valid-feedback">Valido</div>
+        										<div class="invalid-feedback">Elija un estatus</div>
+								   	</div> 
+		   						
+				   			</div> 
+				   		
+
+
+
+		
+      </div>
+  
+ </div>
+ 
+  
+  </section>
+
+   <hr class="mb-0">
+   
+    <div class="form-group row">
+		<div class="col-lg-12 text-center">
+			<a class="btn btn-secondary"  th:href="@{'/editAssignedCausal/cancel'}">Cancelar</a>
+			<input type="submit" class="btn btn-primary"
+				value="Guardar " th:value="${editMode}?'Actualizar causal':'Guardar causal'">
+		</div>
+	</div>
+	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error MEssage</div>
+	<div class="alert alert-success text-center d-none" id="formSuccess" th:if="${editMode}" >Success MEssage</div>
+</form>
+
+ <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+
+<!--  Con esta funcion implementamos la validacion de los campos por bootstarp -->
+ <script type="text/javascript">
+(function() {
+'use strict';
+window.addEventListener('load', function() {
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+var validation = Array.prototype.filter.call(forms, function(form) {
+form.addEventListener('submit', function(event) {
+if (form.checkValidity() === false) {
+event.preventDefault();
+event.stopPropagation();
+}
+form.classList.add('was-validated');
+}, false);
+});
+}, false);
+})();
+</script>
+
+
+
+  
+<!-- <script>
+
+var datepicker, configVigente, configProxima;
+var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
+configProxima = {
+    locale: 'es-es',
+    iconsLibrary: 'fontawesome',
+    minDate: today,
+    format: 'dd-mm-yy',
+    minDate: today,
+    maxDate: function () {
+            return $('#vigencia').val();
+        }
+        
+};
+configVigente = {
+	    locale: 'es-es',
+	    iconsLibrary: 'fontawesome',
+	    minDate: today,
+	    format: 'dd-mm-yy',
+	    minDate: function () {
+            return $('#proximaVerificacion').val();
+        }
+	    
+	};
+
+$(document).ready(function () {
+    $('#vigencia').datepicker( configVigente);
+    $('#proximaVerificacion').datepicker(configProxima);
+    
+});
+
+</script> -->
+
+

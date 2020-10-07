@@ -1,0 +1,44 @@
+<div class="container-fluid">
+		<!-- <div class="mx-auto col-sm-8 main-section" id="myTab" role="tablist"> -->
+		<h1 class="h3 mb-2 text-gray-800" id="myTab" role="tablist">Catálogo de usuarios</h1>
+		
+		<ul class="nav nav-tabs justify-content-end">
+			<li class="nav-item">
+			<a class="nav-link " th:classappend=" ${listTab}" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="false">Lista</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" th:classappend=" ${formTab}" id="form-tab" data-toggle="tab" href="#form" role="tab" aria-controls="form" aria-selected="true">Agrega</a>				   	
+			</li>
+			
+		</ul>
+		
+	<!-- <div class="container"> -->
+		
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show" th:classappend=" ${listTab}" id="list" role="tabpanel" aria-labelledby="list-tab">
+				<div class="card">
+					<div class="card-header">
+						<h4>Lista de Usuarios</h4>
+					</div>
+					<div class="card-body">
+						<div th:include="catUser/UserList.html" th:remove="tag"></div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="tab-pane fade show" th:classappend=" ${formTab}" id="form" role="tabpanel" aria-labelledby="form-tab">
+				<div class="card">
+					<div class="card-header">
+						<h4>Información de usuario</h4>
+					</div>
+					<div class="card-body">
+						<div th:include="catUser/UserForm.html" th:remove="tag"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 
+<div th:if="${editMode}" th:include="user-form/change-password.html" th:remove="tag"></div> -->

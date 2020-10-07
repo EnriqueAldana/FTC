@@ -1,0 +1,109 @@
+
+CRUD de Usuarios
+Blog
+http://cristianruizblog.com/html-ejemplo-crud-con-bootstrap4/
+
+Codigo
+https://github.com/cruizg93/Spring-Boot-Aplicacion
+
+
+
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:if="${editMode}" th:include="user-form/change-password.html" th:remove="tag"></div>
+<div th:include="user-form/confirm-delete-dialog.html" th:remove="tag"></div>
+
+ <!-- Begin Page Content Incluir Botones.html-->
+        <div th:include="botones.html" th:remove="tag"></div>
+        
+ 
+ 
+ Manejo de datos en Tablas
+ 
+ https://datatables.net/manual/data/
+ 
+ 
+ 
+ PUERTO OCUPADO
+ lsof -i -P|grep -i "8080"
+ 
+ 
+ https://source.unsplash.com/Mv9hjnEUHR4/600x800
+ 
+ https://unsplash.com/photos/anrVHgYaLWI
+ 
+  https://source.unsplash.com/anrVHgYaLWI/600x800
+  
+  Archivos de carga en cada pagina:
+  
+ENTRADA
+   <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  
+  
+CONTENIDO DE PAGINA
+  
+  
+SALIDA
+    <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/chart-area-demo.js"></script>
+  <script src="js/demo/chart-pie-demo.js"></script>
+  
+  
+  
+  Referencias de tutorial
+  Seguridad y Login
+  
+  http://cristianruizblog.com/spring-boot-aplicacion-web-parte-9/
+  
+  Ahora limitaremos las acciones de los usuarios dependiendo del role asignado, en este caso limitaremos al rol USER porque el ADMIN va a tener acceso a todo.
+
+ADMIN															USER
+1.Crear Usuarios	
+2.Editar Cualquier Usuario								Editar Propia informacion
+3.Eliminar Cualquier Usuario	
+4.Cambiar Password Cualquier Usuario					Cambiar su Propio Password (ingresando el actual)
+
+
+AJAX
+
+https://cybmeta.com/ajax-con-json-y-php-ejemplo-paso-a-paso
+
+https://webdesign.tutsplus.com/es/tutorials/building-a-bootstrap-contact-form-using-php-and-ajax--cms-23068
+
+
+
+REST
+https://spring.io/guides/tutorials/rest/
+  
+  
+  Modal
+  
+  https://mdbootstrap.com/docs/standard/components/modal/
+  
+  DataPicker Bootrap
+  
+https://bootstrap-datepicker.readthedocs.io/en/latest/
+  
+  Spring Security
+  
+  https://spring.io/guides/gs/securing-web/
+  

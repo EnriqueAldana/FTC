@@ -1,0 +1,71 @@
+<!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Desea salir?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Seleccione "Salir" si Ud. está listo para dejar la sesión.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Regresar</button>
+          <a class="btn btn-primary" href="login.html">Salir</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+	<script th:src="@{assets/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>
+	<script src="assets/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js" charset="UTF-8"></script>
+	
+	<!-- <script th:src="@{/webjars/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js}"></script> -->
+	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/sb-admin-2.min.js}"></script>
+	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/chart.js/Chart.min.js}"></script>
+	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/chart-area-demo.js}"></script>
+	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/chart-pie-demo.js}"></script>
+  
+
+ 
+  	<script th:src="@{/webjars/mdbootstrap-bootstrap-material-design/4.8.8/js/mdb.min.js}"></script>
+  	<script th:src="@{/webjars/mdbootstrap-bootstrap-material-design/4.8.8/js/addons/datatables.min.js}"></script>
+	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/datatables/jquery.dataTables.min.js}"></script>
+  	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+   	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/datatables-demo.js}"></script>
+	<script type="text/javascript" src="js/addons/datatables2.min.js"></script>
+  	<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/sb-admin-2.min.js}"></script>
+  	
+
+  	
+  	
+
+  <script type="text/javascript">  
+  
+
+	</script>
+	
+	
+ 
+
+  <script type="text/javascript">
+$(document).ready(function () {
+
+	// Este es el nombre de las clases utilizadas para el gestor de fechas del sistema
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        language: 'es',
+        format: "dd-mm-yyyy",
+        title: "Calendario"
+    });
+
+});
+</script>
+

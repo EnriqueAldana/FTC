@@ -1,0 +1,120 @@
+
+<section class="form-elegant scrollbar-light-blue">
+
+<!-- <form class="border border-light p-5" th:object="${companyForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editUser} :@{/companyForm})" method="post"> -->
+<form class="needs-validation" novalidate role="form" autocomplete="off"  th:object="${companyForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editCompany} :@{/companyForm})" method="post">
+
+<input class="form-control" type=hidden th:field="${companyForm.id}"  th:if="${editMode}">
+
+
+  <div class="card">
+
+	    <!-- Card header -->
+	    <div class="card-header" role="tab" id="heading4">
+
+	        <h4 class="mb-0 mt-3 blue-text">
+	          Datos generales de la empresa. 
+	        </h4>
+	      </div>
+	    <!-- Card body -->
+	   
+	      <div class="card-body pt-0">
+	         <div th:include="catCompany/company-data.html" th:remove="tag"></div>
+	      </div>
+  </div>
+  <!-- Accordion card -->
+
+  <!-- Accordion card -->
+  <div class="card">
+    	<!-- Card header -->
+	    <div class="card-header" role="tab" id="heading4">
+	        <h4 class="mb-0 mt-3 blue-text">
+	          Tipos de Importación - Exportación 
+	        </h4>
+    	</div>
+
+    <!-- Card body -->
+    
+      <div class="card-body pt-0">
+        <div th:include="catCompany/company-configuration-impexptype.html" th:remove="tag"></div>
+      </div>
+  
+ </div>
+
+  <!-- Accordion card -->
+  <div class="card">
+
+	    <!-- Card header -->
+	    <div class="card-header" role="tab" id="heading6">
+	        <h4 class="mb-0 mt-3 blue-text">
+	          Alertas 
+	        </h4>    
+	    </div>
+	
+	    <!-- Card body -->
+	      <div class="card-body pt-0">
+	         <div th:include="catCompany/company-configuration-alerts.html" th:remove="tag"></div>
+	      </div>
+  
+  </div>
+  
+  <!-- Accordion card -->
+  <div class="card">
+
+    <!-- Card header -->
+    <div class="card-header" role="tab" id="heading6">
+        <h4 class="mb-0 mt-3 blue-text">
+          Monitor de cumplimiento 
+        </h4>
+    </div>
+
+    <!-- Card body -->
+      <div class="card-body pt-0">
+          <div th:include="catCompany/company-configuration-monitor.html" th:remove="tag"></div>
+      </div>
+    
+  </div>
+  
+  </section>
+  
+  <!-- Accordion card -->
+  
+<!--/.Accordion wrapper-->
+	
+   <hr class="mb-0">
+   
+    <div class="form-group row">
+		<div class="col-lg-12 text-center">
+			<a class="btn btn-secondary"  th:href="@{'/companyForm/cancel'}">Cancelar</a>
+			<!-- ToDO revisar funcionalidad de abrir pop up de actualizar contraseña -->
+			<!-- <button type="button" class="btn btn-secondary" data-toggle="modal" th:if="${editMode}" data-target="#changePasswordModal">Cambio de contraseña</button> -->
+			<input type="submit" class="btn btn-primary"
+				value="Guardar " th:value="${editMode}?'Actualizar empresa':'Guardar empresa'">
+		</div>
+	</div>
+	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error MEssage</div>
+	<div class="alert alert-success text-center d-none" id="formSuccess" th:if="${editMode}" >Success MEssage</div>
+</form>
+
+
+
+<!--  Con esta funcion implementamos la validacion de los campos por bootstarp -->
+ <script type="text/javascript">
+(function() {
+'use strict';
+window.addEventListener('load', function() {
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+var validation = Array.prototype.filter.call(forms, function(form) {
+form.addEventListener('submit', function(event) {
+if (form.checkValidity() === false) {
+event.preventDefault();
+event.stopPropagation();
+}
+form.classList.add('was-validated');
+}, false);
+});
+}, false);
+})();
+</script>

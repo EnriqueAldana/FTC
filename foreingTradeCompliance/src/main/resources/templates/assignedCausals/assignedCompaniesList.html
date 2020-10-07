@@ -1,0 +1,262 @@
+
+
+	<div class="form-group row">
+	
+			<label th:text="Empresas" class="col-lg-3 col-form-label form-control-label"></label>
+			<div class="col-lg-9">
+				<select  class="form-control" id="companySelect"  placeholder="Seleccione una empresa"
+				required="required"  th:onchange="'javascript:companyChange(this.value);'" >      
+					<option th:each="company :${companyList}" th:value="${company.id}" th:text="${company.companyName}">
+					</option>
+				</select>
+				
+			</div>
+			
+			<label th:text="Tipos " class="col-lg-3 col-form-label form-control-label" mt-3></label>
+			<div class="col-lg-9" mt-3>
+				<select  class="form-control" id="impExpTypeSelect"  placeholder="Seleccione un tipo de imp o exp"
+				th:onchange="'javascript:impExpTypeChange(this.value);'" >      
+					
+				</select>
+				
+			</div>
+		
+			<div th:include="assignedCausals/assignedCausalsList.html" th:remove="tag"></div>
+				
+			
+	</div>
+
+
+
+<!-- <div th:include="assignedCausals/assignedCausalModalForm.html" th:remove="tag"></div> -->
+
+<script type="text/javascript">
+
+	var companyData;
+	var selectedCompanyId;
+	function companyChange(companyId) {
+		//alert(companyId);
+		selectedCompanyId = companyId;
+		console.log("Entrando en companyChange " + companyId);
+		$.ajax({
+					// En data puedes utilizar un objeto JSON, un array o un query string
+					// data: {"companyId" : companyId},
+					//Cambiar a type: POST si necesario
+					type : "GET",
+					// Formato de datos que se espera en la respuesta
+					dataType : "json",
+					// URL a la que se enviará la solicitud Ajax
+					url : "/impExpTypes/" + companyId,
+				})
+				.done(
+						function(data, textStatus, jqXHR) {
+							companyData = data;
+							if (console && console.log) {
+								console.log("La solicitud se ha completado correctamente.");
+								console.log("data " + data);
+								$('#impExpTypeSelect').empty();
+								$.each(data.impExpTypeList,function(key, value) {
+
+													/* console.log("Key " + key); // Esta es la posicion en el arreglo de JSON
+													console.log("ImpExpType ID "
+																	+ value['id']); // Este es el valor del campo id
+													console.log("ImpExpType Name "
+																	+ value['impExpTypeName']); // Este es el valor del campo impExtType */
+													// Esto ya se puede meter al Select de ImpExp
+
+													$('#impExpTypeSelect').append(
+																	'<option value="' + value['id'] + '">'
+																			+ value['impExpTypeName']
+																			+ '</option>');
+													/* console.log("Agregando opciones al select de impExpType");
+													// recorremos los valores de cada registro de la lista de causales
+													$.each(value['causalList'],function(key,value) {
+
+																		console.log("Causal Key "+ key);
+																		console.log("Causal Id "+ value['id']);
+																		console.log("Causal Descripcion "+ value['causalDescription']);
+ */ 
+																		/* $.each(value['instructionList'],function(key,value) {
+																							console.log("Instruccion  Key "+ key);
+																							console.log("Instruccion Id "+ value['id']);
+																							console.log("Instruccion Descripcion "+ value['instructionDescription']);
+
+																						}); */
+
+																	/* }); */ 
+
+												});
+
+							}
+						}).fail(function(jqXHR, textStatus, errorThrown) {
+					if (console && console.log) {
+						console.log("La solicitud a fallado: " + textStatus);
+					}
+				});
+
+		console.log("actualizando impExpTypeChange con companyId " + companyId + " e impExpTypeSelect value id "  + $('#impExpTypeSelect').val());
+		// Actualiza Causales por defecto. Retardar para asegurar que se cargue el objeto companyData
+		setTimeout(function(){
+					impExpTypeChange( $('#impExpTypeSelect').val());
+		},500);
+		
+	}
+	
+	
+	function impExpTypeChange( impExpTypeId){
+		//alert("impExpTypeId " + impExpTypeId ); 
+		console.log(  "Entrando a mostrar lista de causales"+ "companyId " + selectedCompanyId + " impExpTypeId " + impExpTypeId);
+		var html_head;
+		var html_body;
+		var html_foot;
+		
+		html_head = '<thead>' +
+					'<th class="th-sm">Num.</th>' +
+					'<th class="th-sm">Acciones</th>' +
+					'<th class="th-sm">Fr.</th>' +
+					'<th class="th-sm">O-SC-E</th>' +
+					'<th class="th-sm">Causal</th>' +
+					'<th class="th-sm">Clasificacion</th>' +
+					'<th class="th-sm">Exclusiva</th>' +
+					'<th class="th-sm">Cumplimiento</th>' +
+					'</thead>';
+					
+					
+		html_foot = '<tfoot>' +
+			'<th class="th-sm">Num.</th>'+
+			'<th class="th-sm">Acciones</th>'+
+			'<th class="th-sm">Fr.</th>'+
+			'<th class="th-sm">O-SC-E</th>'+
+			'<th class="th-sm">Causal</th>'+
+			'<th class="th-sm">Clasificacion</th>'+
+			'<th class="th-sm">Exclusiva</th>'+
+			'<th class="th-sm">Cumplimiento</th>'+
+			'</tfoot>';
+		
+		
+		$.each(companyData.impExpTypeList,function(key, value) {
+			console.log("impExpType Id de la lista" + impExpTypeId);
+			
+			if (impExpTypeId == value['id']) {
+				console.log("entrando a agregar registro a la tabla");
+				html_body += '<tbody>';
+					// recorremos los valores de cada registro de la lista de causales
+					$.each(value['causalList'],function(key,value) {
+
+										// console.log("Causal Key "+ key);
+										console.log("Causal Id "+ value['id']);
+										//console.log("Causal Descripcion "+ value['causalDescription']);
+							
+						                     
+										html_body += '<tr>';
+										html_body += '<td> ' + value['id'] + '</td>';
+									/* 	html_body += '<td> ' + '<a href="/editAssignedCausal/ ' + selectedCompanyId + '/'+ impExpTypeId + '/' + value['id'] + ' "><i class="fas fa-edit"></i></a>'  + '</td>'; */
+										 
+										html_body += '<td> ' + ' <a href="#" onclick="editAssignedCausal(\''+ selectedCompanyId +'\',\''+ impExpTypeId +'\',\''+ value['id'] +'\')"><i class="fas fa-edit"></i></a> ' + '</td>';
+										
+														
+										// html_body += '<td> ' + ' <button type="button" class="btn btn-outline-primary btn-sm m-0 waves-effect" data-toggle="modal" data-target="#modalAssignedCausalForm" >Editar</button>' + '</td>';
+										html_body += '<td>' + value['causalFraction'] + '</td>';
+										html_body += '<td> ' + value['causalOsCe'] + '</td>';
+										html_body += '<td> ' + value['causalDescription'] + '</td>';
+										html_body += '<td> ' + value['causalClasification'] + '</td>';
+										html_body += '<td> ' + value['causalExclusive'] + '</td>';
+										html_body += '<td> ' + value['causalCumplimiento'] + '</td>';
+										html_body += '</tr>';
+
+										
+										/* $.each(value['instructionList'],function(key,value) {
+															console.log("Instruccion  Key "+ key);
+															console.log("Instruccion Id "+ value['id']);
+															console.log("Instruccion Descripcion "+ value['instructionDescription']);
+
+														}); */
+
+									});
+					
+					
+					html_body += '</tbody>';
+					
+					/* // Aqui agregar los renglones a la tabla.
+					var tabla = document.getElementById("dtAssignedCausals");
+					// extraer las columnas de la tabla desde el JSON
+					// EXTRACT VALUE FOR HTML HEADER. 
+			        // ('Book ID', 'Book Name', 'Category' and 'Price')
+			        var col = [];
+			        for (var i = 0; i < value['causalList'].length; i++) {
+			            for (var key in value['causalList'][i]) {
+			                if (col.indexOf(key) === -1) {
+			                    col.push(key);
+			                }
+			            }
+			        }
+			        
+			        // Create a table.
+			        var tabla = document.createElement("table");
+			        
+			        // Agregar cabeceras a la tabla
+			         // Create table header row using the extracted headers above.
+			        var tr = tabla.insertRow(-1);                   // table row.
+			
+			        for (var i = 0; i < col.length; i++) {
+			            var th = document.createElement("th");      // table header.
+			            th.innerHTML = col[i];
+			            tr.appendChild(th);
+			        }
+        
+					// Agregar renglones a la tabla
+					 // ADD JSON DATA TO THE TABLE AS ROWS.
+			        for (var i = 0; i < value['causalList'].length; i++) {
+			
+			            tr = tabla.insertRow(-1);
+			
+			            for (var j = 0; j < col.length; j++) {
+			                var tabCell = tr.insertCell(-1);
+			                tabCell.innerHTML = value['causalList'][i][col[j]];
+			            }
+			        } */
+					
+			} // FIn If
+			
+			 $('#dtAssignedCausals').html( html_head + html_foot + html_body);
+			
+			// Now, add the newly created table with json data, to a container.
+	       /*  var divShowData = document.getElementById('containerAssignedCausals');
+	        divShowData.innerHTML = "";
+	        divShowData.appendChild(tabla); */
+			
+			
+			
+			
+		});
+		
+		
+	}
+	
+</script>
+ 
+ <script type="text/javascript">
+(function() {
+'use strict';
+window.addEventListener('load', function() {
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+var validation = Array.prototype.filter.call(forms, function(form) {
+form.addEventListener('submit', function(event) {
+if (form.checkValidity() === false) {
+event.preventDefault();
+event.stopPropagation();
+}
+form.classList.add('was-validated');
+}, false);
+});
+}, false);
+})();
+</script>
+
+ 
+ 
+ 
+
+

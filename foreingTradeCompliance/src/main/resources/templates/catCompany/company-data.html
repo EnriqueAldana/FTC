@@ -1,0 +1,74 @@
+<div class="form-group row">
+   			<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Nombre de la empresa</label>
+   			<div class="col-lg-9">
+   			 	<input type="text" th:field="${companyForm.companyName}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba el nombre de la empresa"
+   			 	required="required" >
+   			 	<div class="alert-danger" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el nombre de la empresa</div>
+   			</div>   	
+    </div>
+    
+    <div class="form-group row">
+    	<label  class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyAddress">Dirección de la empresa</label>
+    	<div class="col-lg-9">
+    		<input type="text" th:field="${companyForm.companyAddress}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba la dirección de la empresa"
+    		required="required">
+    		<div class="alert-danger" th:if="${#fields.hasErrors('companyAddress')}" th:errors="*{companyAddress}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba la dirección de la empresa JEAS</div>
+    	</div>
+    </div>	
+     
+    <div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyId">Registro Federal de Contribuyentes de la empresa</label>
+    	<div class="col-lg-9">
+    		<input type="text" th:field="${companyForm.companyId}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba el RFC de la empresa"
+    		required="required">
+    		<div class="alert-danger" th:if="${#fields.hasErrors('companyId')}" th:errors="*{companyId}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el R.F.C. de la empresa</div>
+		 </div>	 
+	</div>	 
+
+	<div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyPhone">Telefonos de la empresa</label>
+   		 <div class="col-lg-9">
+   		 	<input type="text" th:field="${companyForm.companyPhone}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba los telefonos de la empresa"
+   		 	required="required">
+   			 <div class="alert-danger" th:if="${#fields.hasErrors('companyPhone')}" th:errors="*{companyPhone}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el teléfono de la empresa</div>
+     	 </div>
+     	
+     </div>
+     
+	<div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyEmail">Correo electrónico de la empresa</label>
+    	<div class="col-lg-9">
+    		<input type="email" th:field="${companyForm.companyEmail}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba el correo electrónico de la empresa"
+    		required="required">
+    		<div class="alert-danger" th:if="${#fields.hasErrors('companyEmail')}" th:errors="*{companyEmail}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el correo electrónico de la empresa</div>
+    	</div>
+    </div>
+     
+    <div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyWeb">Página Web de la empresa</label>
+   		 <div class="col-lg-9">
+   			 <input type="text" th:field="${companyForm.companyWeb}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba la dirección web de la empresa"
+   			 required="required">
+   			 <div class="alert-danger" th:if="${#fields.hasErrors('companyWeb')}" th:errors="*{companyWeb}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba la pagina web de la empresa</div>
+		 </div>
+		
+	</div>
+	
+	<div class="custom-control custom-switch">
+		  <input type="checkbox" class="custom-control-input"  th:field="${companyForm.isEnabled}" th:disabled="${disableFields}"  id="isEnabled" checked>
+		  <label class="custom-control-label" for="isEnabled" >Habilitar empresa</label>
+	</div>
+	  
+	

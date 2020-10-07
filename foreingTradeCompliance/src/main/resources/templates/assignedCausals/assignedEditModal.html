@@ -1,0 +1,391 @@
+
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignedEditModalForm">
+  Launch demo modal
+</button>
+ -->
+
+<input type="hidden" id="companyIdHiddenInput" name="companyIdHiddenInput"/>
+<input type="hidden" id="expImpTypeIdHiddenInput" name="expImpTypeIdHiddenInput"/>
+<input type="hidden" id="causalIdHiddenInput" name="causalIdHiddenInput"/>
+<input type="hidden" id="complianceIdHiddenInput" name="complianceIdHiddenInput"/>
+
+
+
+<div class="modal fade" id="assignedEditModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+ <form id="actualizarCausalForm" class="needs-validationAssigned" novalidate role="form" autocomplete="off" >
+
+
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edicion de la causal asignada</h5>
+        <button type="button" id="cerrarModal" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+					  <div id="wrapper">
+					    <div id="content-wrapper" class="d-flex flex-column">		    
+					      <div id="content">			
+						       <div class="card-header">
+												<h4>Edición de la información de la causal asignada</h4>
+								</div>
+								
+								<div class="card">
+
+								    <!-- Card header -->
+								    <div class="card-header" role="tab" id="heading4">
+							
+								        <h4 class="mb-0 mt-3 blue-text">
+								          Datos generales de la causal asignada. 
+								        </h4>
+								      </div>
+								    <!-- Card body -->
+								   
+								      <div class="card-body pt-0">
+								         <!-- <div th:include="catCompany/company-data.html" th:remove="tag"></div> -->
+								          <div class="card-body pt-0">
+								         <!-- <div th:include="catCompany/company-data.html" th:remove="tag"></div> -->
+										         <div class="form-group row">
+									   					<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Causal</label>
+											   			<div class="col-lg-9">
+											   			 	<p class="card-text" id="causalDescripcion"> </p>
+											   			</div> 
+											   	</div>   
+									   			 <div class="form-group row">
+									   					<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Cumplimiento</label>
+									   					<div class="col-lg-9">
+									   			 			<p class="card-text" id="causalCumplimiento"> </p>
+									   			 			</div> 
+									   			</div> 
+							 	
+							    	</div>
+								      </div>
+							  </div>
+							  
+							  <div class="card">
+						    	<!-- Card header -->
+									    <div class="card-header" role="tab" id="heading4">
+									        <h4 class="mb-0 mt-3 blue-text">
+									          Lista de instrucciones 
+									        </h4>
+								    	</div>
+						
+									    <!-- Card body -->
+									    
+									      <div class="card-body pt-0">
+									        <!-- <div th:include="catCompany/company-configuration-impexptype.html" th:remove="tag"></div> -->
+									        
+									        					<div class="form-group row">
+											   							<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Lista de instrucciones para el cumplimiento</label>
+															   			<div class="col-lg-9">
+															   			 	<!-- <div th:include="assignedCausals/instructionList.html" th:remove="tag"></div> -->
+															   			 	<table id="dtInstructions" class="table table-bordered table-responsive " cellspacing="0" width="100%">
+																						<thead>
+																							<th class="th-sm">Id.</th>
+																							<th class="th-sm">Descripcion</th>
+																						</thead>
+																						<tbody>	
+																			</table>	
+															   			</div> 
+													   			</div> 
+									      </div>
+						  
+						 	</div>
+												
+							<div class="card">
+					    	<!-- Card header -->
+						    <div class="card-header" role="tab" id="heading4">
+						        <h4 class="mb-0 mt-3 blue-text">
+						          Configuracion de la causal 
+						        </h4>
+					    	</div>
+					
+					    <!-- Card body -->
+					    
+					      <div class="card-body pt-0">
+					        <!-- <div th:include="catCompany/company-configuration-impexptype.html" th:remove="tag"></div> -->
+					        
+					        					<div class="form-group row">
+					        					<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Estado de la causal</label>
+							        					<div class="custom-control custom-switch">
+													   			 	<input type="checkbox" class="custom-control-input"  value="true" th:disabled="${disableFields}"  id="isCompliance" 
+													   			 	required="required">
+									 						 		<label class="custom-control-label" for="isCompliance" >¿La causal esta conforme?</label>
+									 						 		<div class="valid-feedback">Valido</div>
+					        										<div class="invalid-feedback">Elija un estatus</div>
+													   	</div> 
+							   						
+									   			</div> 
+									   			<div class="form-group row">
+										           <label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Fecha de Vigencia</label>
+										                <div class="input-group date">
+										                    <input type="text" class="form-control" id="fechaVigencia" autocomplete="off" />
+										                    <div class="input-group-append">
+										                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+										                    </div>
+										                </div>
+										                <div class="valid-feedback">Valido</div>
+        												<div class="invalid-feedback">Elija una fecha de vigencia</div>
+										            	
+										        </div>
+									   			<div class="form-group row">
+									   				<label class="col-lg-3 col-form-label form-control-label" for="companyFormcompanyName">Fecha de proxima verificacion</label>
+														<!-- <div class="col-lg-9"> -->
+										            
+										                <div class="input-group date">
+										                    <input type="text" class="form-control" id="fechaProximaVerificacion" autocomplete="off" />
+										                    <div class="input-group-append">
+										                        <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+										                    </div>
+										                </div>
+										                <div class="valid-feedback">Valido</div>
+        												<div class="invalid-feedback">Elija una fecha de proxima verificacion</div>
+										          
+										        </div>
+										        
+										        
+										       
+										        
+							
+					      </div>
+					  
+					 </div>
+ 
+
+
+						      
+				 </div>
+			</div>      		
+      </div> 
+     
+      <div class="modal-footer">
+      
+      
+       
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+       
+      	<button type="button" class="btn btn-primary" th:onclick="toUpdateeditAssignedCausal()">Actualizar causal</button>
+ 
+     	 
+     	 
+		
+      </div>
+    </div>
+  </div>
+</div> 
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="responseeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mensaje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Ha habido una dificultad para actualizar la causal, asegurese de completar todos los datos.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+ 
+
+function getFormattedDate(dateString) {
+
+	 /*  var d = new Date(dateString);
+	  console.log("dateString" + dateString);
+	  var year = d.getFullYear();
+	  console.log("Anio " + year);
+	  var month = d.getMonth()+1;
+	  console.log("Mes  " + month);
+	  var day = d.getDate();
+	  console.log("Dia " + day); */
+	  
+	  var dateRet = dateString.slice(0, 10).split('-');   
+	  return  dateRet[2]  +'-'+ dateRet[1] +'-'+ dateRet[0]; // 30/10/2010
+	} 
+	
+ function validateForm(){
+	    // Campos de texto
+	    if($("#fechaProximaVerificacion").val() == ""){
+	        alert("La fecha de proxima verificación no puede esta vacia");
+	        $("#fechaProximaVerificacion").focus();       // Esta función coloca el foco de escritura en el campoe directamente.
+	        return false;
+	    }
+	    if($("#fechaVigencia").val() == ""){
+	        alert("El campo de fecha de vigencia no puede estar vacio.");
+	        $("#fechaVigencia").focus();
+	        return false;
+	    }
+	    
+
+	    return true; // Si todo está correcto
+	}
+ 
+ function toUpdateeditAssignedCausal(){
+	 
+	
+	
+	 
+	//console.log(JSON.stringify(parametros));
+	if ( validateForm()) {
+		
+
+			var companyIdPar =$("#companyIdHiddenInput").val();
+			var expImpTyoeIdPar =$("#expImpTypeIdHiddenInput").val();
+			var causalIdPar =$("#causalIdHiddenInput").val();
+			
+			
+		 //console.log("parametrosFORM " + parametrosFORM);
+		 var complianceIdPar =$("#complianceIdHiddenInput").val();
+		 
+		 //console.log("complianceIdPar " + complianceIdPar);
+		  var isCompliancePar = $("#isCompliance").is(":checked") ? "true" : "false";
+		  var statusPar;
+		  if (isCompliancePar === 'true'){
+			  statusPar="1";
+		  }else{
+			  statusPar="3";
+		  }
+		 
+		 //console.log("isCompliancePar " + isCompliancePar);
+		 var fechaProximaVerificacionPar =$("#fechaProximaVerificacion").val();
+		 //console.log("fechaProximaVerificacionPar "+ fechaProximaVerificacionPar);
+		 var fechaVigenciaPar =$("#fechaVigencia").val();
+		 //console.log("fechaVigenciaPar " +fechaVigenciaPar);
+		 $("#resultado").html(""); 
+		 
+		 
+		 var parametros = {};
+		 parametros[ "id"] = complianceIdPar;
+		 parametros[ "companyId"] = companyIdPar;
+		 parametros[ "impExpTypeId"] = expImpTyoeIdPar;
+		 parametros[ "causalId"] = causalIdPar;
+		 parametros["statusId"] = statusPar;
+		 parametros["isCompliance"] = isCompliancePar;
+		 parametros["complianceEvaluationDate"] = fechaProximaVerificacionPar;
+		 parametros["effectiveDateForCompliance"] = fechaVigenciaPar;
+		 
+		 
+		 var parametrosJSON= JSON.stringify(parametros);
+		 
+		 
+		 $.ajax({
+		     data:parametrosJSON,
+		     url:'/editAssignedCausal',
+		     type: 'post',
+		     //dataType: 'json',
+		     beforeSend: function () {
+		         $("#resultado").html("Procesando, espere por favor");
+		         $(".alert").alert('close');
+		     },
+		     success: function (response) {  
+		    	 console.log("Respuesta de actualizar Causal Asignada ");
+		    	// alert("Respuesta de actualizar Causal Asignada " + response);
+		    	 
+		    	 //$('#cerrarModal').click();
+		    	 console.log("response " +response);
+		    	 if(response === 'success'){
+		    		
+		    		 $('#assignedEditModalForm').modal('toggle');   // Actua a la inversa del estado en el que esté. Si show entonces hide
+		    	 }
+		    	
+		    	 
+		     },
+		     error: function(errorresponse){
+		    	
+		    	 $('#responseeModal').modal('show');
+		     }
+		 });
+		
+	}
+			
+	 
+ }
+ 
+ 
+ 
+ function editAssignedCausal(companyid,expimptypeid,causalid){
+		console.log("Entrando a llamar a la Modal assignedEditModalForm para editar Causal");
+		console.log("companyid " + companyid);
+		console.log("expimptypeid " + expimptypeid);
+		console.log("causalid "+causalid);
+		
+		$("#companyIdHiddenInput").val(companyid,causalid);
+		$("#expImpTypeIdHiddenInput").val(expimptypeid);
+		$("#causalIdHiddenInput").val(causalid);
+		
+		var html_head;
+		var html_body;
+		
+		html_head = '<thead>' +
+					'<th class="th-sm">Id</th>' +
+					'<th class="th-sm">Descripción</th>' +
+					
+					'</thead>';
+					
+		$.ajax({ 
+	          type: "GET", 
+	          url: 'getCompliance/'+companyid+'/'+ expimptypeid +'/'+causalid ,
+	          dataType: 'json',
+	          success: function(data){ 
+	           /*  htmlData = '<ul><li>title: '+data.first_name+'</li><li>age: '+data.age+'</li></ul>'; */
+	           console.log(data.company.companyName);
+	          	$('#complianceIdHiddenInput').val(data.id);
+				console.log(data.id);
+	            $('#causalDescripcion').text(data.causal.causalDescription);
+	            $('#causalCumplimiento').text(data.causal.causalCumplimiento);
+	            
+	            $.each(data.causal.instructionList, function(key, value) {
+	            	console.log("key " + key); 
+	            	console.log("value " + value['id']); 
+	            	console.log("value " + value['instructionDescription']); 
+	            	});
+	            
+	            var json = eval( data.causal.instructionList );
+
+	            Object.keys( json ).sort(function( a,b ) {
+	                return json[a].instructionOrder.localeCompare( json[b].instructionOrder );
+	            }).forEach(function( key ) {
+	            	// Construir la tabla
+	            	html_body += '<tr>';
+										html_body += '<td> ' + json[key].id + '</td>';
+										html_body += '<td>' + json[key].instructionDescription + '</td>';
+										html_body += '</tr>';
+	               // console.log( json[key].id + json[key].instructionDescription);
+	            });
+	            
+	            html_body += '</tbody>';
+	            $('#dtInstructions').html( html_head  + html_body);
+	            
+	            if(data.isCompliance == true){	
+		            $('#isCompliance').prop('checked', true);		
+	            }
+	            console.log("data.complianceEvaluationDate " + getFormattedDate(data.complianceEvaluationDate));
+	            $('#fechaProximaVerificacion').val(getFormattedDate(data.complianceEvaluationDate));
+	            $('#fechaVigencia').val(getFormattedDate(data.effectiveDateForCompliance));
+	            
+	            
+	          }
+	        });
+
+		
+		$('#assignedEditModalForm').modal('show');
+		
+	}
+ 
+
+</script>

@@ -1,0 +1,29 @@
+<!-- Card -->
+<div class="card">
+
+  <!-- Card content -->
+  <div class="card-body">
+
+    <!-- Title -->
+    <h4 class="card-title"><a>Monitor de cumplimiento</a></h4>
+    <!-- Text -->
+    <p class="card-text">El monitor es un proceso automático que es ejecutado a un intervalo de tiempo , con la intención de verificar el cumplimiento de las causales.</p>
+   
+   <hr class="mb-0">
+   
+   	<div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormfrecuencyToRunMonitor">Frecuencia de ejecución expresada en Días</label>
+   		 <div class="col-lg-9">
+   		 	<input type="number" min="1" max="365" th:field="${companyForm.frequencyToRunMonitor}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba el numero de dias para la ejecución del monitor"
+   		 	required="required">
+   			<div class="alert-danger" th:if="${#fields.hasErrors('frequencyToRunMonitor')}" th:errors="*{frequencyToRunMonitor}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el número de días para la ejecución del monitor de cumplimiento.</div>
+     	 </div>
+     	
+     </div>
+
+  </div>
+
+</div>
+<!-- Card -->

@@ -1,0 +1,92 @@
+<div class="card">
+
+  <!-- Card content -->
+  <div class="card-body">
+
+    <!-- Title -->
+    <h4 class="card-title"><a>Alertas de correo del sistema para la empresa</a></h4>
+    <!-- Text -->
+    <p class="card-text">Las alertas son mensajes de correo electrónico que el sistema envia automáticamente a los usuarios en función de la configuración siguiente, para advertir sobre la condición al cumplimiento en comercio exterior de la empresa. Una alerta es generada cuando una causal cambia de estado.</p>
+   
+   <hr class="mb-0">
+   
+   
+   		<div class="custom-control custom-switch">                  
+		  <input type="checkbox" class="custom-control-input" th:field="${companyForm.areAlertsEnabled}" th:disabled="${disableFields}"  id="areAlertsEnabled"  checked>
+		  <label class="custom-control-label" for="areAlertsEnabled" >Habilitar alertas del sistema</label>
+		</div>
+
+		<div class="custom-control custom-switch">
+		  <input type="checkbox" class="custom-control-input"   th:field="${companyForm.areAlertsEnabledToAdministrators}" th:disabled="${disableFields}" id="areAlertsEnabledToAdministrators" checked>
+		  <label class="custom-control-label" for="areAlertsEnabledToAdministrators" >Habilitar alertas para administradores</label>
+		</div>
+
+		<!-- Default switch -->
+		<div class="custom-control custom-switch">
+		  <input type="checkbox" class="custom-control-input"   th:field="${companyForm.areAlertsEnabledToSupervisors}" th:disabled="${disableFields}" id="areAlertsEnabledToSupervisors" checked>
+		  <label class="custom-control-label" for="areAlertsEnabledToSupervisors" >Habilitar alertas para supervisores</label>
+		</div>
+
+		<!-- Default switch -->
+		<div class="custom-control custom-switch">
+		  <input type="checkbox" class="custom-control-input"   th:field="${companyForm.areAlertsEnabledToUsers}" th:disabled="${disableFields}" id="areAlertsEnabledToUsers" checked>
+		  <label class="custom-control-label" for="areAlertsEnabledToUsers" >Habilitar alertas para usuarios</label>
+		</div>
+	
+	<div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormDaysToClimbAlertsToAdministrator">Días considerados para escalar una alerta al administrador</label>
+   		 <div class="col-lg-9">
+   		 	<input type="number" min="1" max="365" th:field="${companyForm.DaysToClimbAlertsToAdministrator}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba el numero de dias para lescalar una alerta al administrador"
+   		 	required="required">
+   			<div class="alert-danger" th:if="${#fields.hasErrors('DaysToClimbAlertsToAdministrator')}" th:errors="*{DaysToClimbAlertsToAdministrator}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el número de días para que el sistema envie una alerta al administrador.</div>
+     	 </div>
+     	
+     </div>
+     	
+   	<div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormDaysToClimbAlertsToSupervisor">Días considerados para escalar una alerta al supervisor</label>
+   		 <div class="col-lg-9">
+   		 	<input type="number" min="1" max="365" th:field="${companyForm.DaysToClimbAlertsToSupervisor}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba el numero de dias para lescalar una alerta al supervisor"
+   		 	required="required">
+   			<div class="alert-danger" th:if="${#fields.hasErrors('DaysToClimbAlertsToSupervisor')}" th:errors="*{DaysToClimbAlertsToSupervisor}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el número de días para que el sistema envie una alerta al supervisor.</div>
+     	 </div>
+     	
+     </div>
+
+	
+     
+     <div class="form-group row">
+    	<label class="col-lg-3 col-form-label form-control-label" for="companyFormDaysToDefault">Días de anticipación considerados para considerar estatus "Por Incumplir". Alerta amarilla.</label>
+   		 <div class="col-lg-9">
+   		 	<input "number" min="1" max="365" th:field="${companyForm.DaysToDefault}" th:disabled="${disableFields}" class="form-control mb-4" placeholder="Escriba el numero de dias de anticipacion para considerar una causal con estatus de Por Incumplir"
+   		 	required="required">
+   			<div class="alert-danger" th:if="${#fields.hasErrors('DaysToDefault')}" th:errors="*{DaysToDefault}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba el número de días que el sistema deberá considerar con anticipación que una Causal está siendo considerada como Por Incumplir.</div>
+     	 </div>
+     	
+     </div>
+     
+     <!--Textarea with icon prefix-->
+<div class="form-group row">
+   <label for="alertMessage">Mensaje de la alerta</label>
+  <textarea th:field="${companyForm.alertMessage}" th:disabled="${disableFields}" id="alertMessage" class="md-textarea form-control" rows="3" placeholder="Escriba aquí el mensaje que desee incluir en las alertas"
+   required="required" ></textarea>
+ 
+  <div class="alert-danger" th:if="${#fields.hasErrors('alertMessage')}" th:errors="*{alertMessage}">Name Error</div>
+   			 	<div class="valid-feedback"></div>
+        		<div class="invalid-feedback">Escriba aquí un texto que será incluido en las alertas que el sistema envíe.</div>
+  
+</div>
+
+
+		
+
+  </div>
+
+</div>
+<!-- Card -->
