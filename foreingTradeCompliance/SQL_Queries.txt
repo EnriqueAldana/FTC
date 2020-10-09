@@ -40,3 +40,9 @@ public void whenMultipleEntitiesAreListedWithJoin_ThenCreatesMultipleJoins() {
 
 
 No default constructor for entity:  : com.cucoex.entity.Compliance
+
+16:56:51	INSERT INTO `causal`   (`causal_clasification`,   `causal_cumplimiento` ,   `causal_description` ,   `causal_exclusive` ,   `causal_fraction` ,   `causal_os_ce` ,   `causal_type`) VALUES ('1','Verificar la localización de los domicilios.','No sean localizados en su domicilio fiscal o éste no reúna las características del artículo 10 del CFF, o bien el domicilio fiscal del contribuyente o alguno de los lugares señalados en el artículo 29, fracción VIII del Reglamento del CFF, estén en el supuesto de inexistente.','G','IX','SC','1')	Error Code: 1406. Data too long for column 'causal_description' at row 1	0.00012 sec
+
+
+17:02:29	INSERT INTO `causal`   (`causal_clasification`,   `causal_cumplimiento` ,   `causal_description` ,   `causal_exclusive` ,   `causal_fraction` ,   `causal_os_ce` ,   `causal_type`) VALUES ('4','Prevenir cambio de origen.','','Con motivo del reconocimiento aduanero o del ejercicio de facultades de comprobación, la autoridad aduanera detecte mercancías que ostentan físicamente alguna marca de origen la cual corresponda a un país que exporta mercancías en condiciones de prácticas desleales de comercio internacional, estén sujetas al pago de una cuota compensatoria o a una medida de transición, y el origen declarado en el pedimento sea distinto.','G','XXXI','SC','4')	Error Code: 1136. Column count doesn't match value count at row 1	0.00012 sec
+

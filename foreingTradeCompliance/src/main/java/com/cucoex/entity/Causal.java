@@ -47,7 +47,7 @@ public class Causal implements Serializable {
 	
 	@Column(nullable=false)
 	@NotEmpty(message = "Introduzca una descripcion")
-	@Size(min=1, max=254)
+	@Size(min=1, max=1254)
 	private String causalDescription;
 	
 	

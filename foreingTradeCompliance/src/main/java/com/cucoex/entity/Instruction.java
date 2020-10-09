@@ -39,7 +39,7 @@ public class Instruction implements Serializable {
 	
 	@Column(nullable=false)
 	@NotEmpty
-	@Size(min=1, max=254)
+	@Size(min=1, max=1254)
 	private String instructionDescripcion;
 
 	@Column(nullable = false,columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

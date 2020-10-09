@@ -55,11 +55,11 @@ public class ImpExpType implements Serializable {
 	@Size(min=1, max=254)
 	private String impExpTypeDescription;
 	
-	@Column(columnDefinition="DATE DEFAULT curdate()")
+	@Column(columnDefinition="DATE DEFAULT (curdate())")
 	@Temporal(TemporalType.DATE)
 	private Calendar created;
 	
-	@Column(columnDefinition="DATE DEFAULT curdate()")
+	@Column(columnDefinition="DATE DEFAULT (curdate())")
 	@Temporal(TemporalType.DATE)
 	private Calendar updated;
 

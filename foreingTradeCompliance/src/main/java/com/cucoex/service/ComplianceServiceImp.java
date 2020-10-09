@@ -23,6 +23,7 @@ import com.cucoex.exception.CompanyException;
 import com.cucoex.exception.ComplianceException;
 import com.cucoex.repository.ComplianceRepository;
 import com.cucoex.repository.StatusRepository;
+import com.cucoex.util.StatusKey;
 import com.cucoex.util.Utileria;
 
 
@@ -37,8 +38,7 @@ public class ComplianceServiceImp implements ComplianceService {
 	ComplianceRepository complianceRepository;
 
 	
-	@Autowired
-	ComplianceService complianceService;
+	
 	
 
 	@Autowired
@@ -47,6 +47,9 @@ public class ComplianceServiceImp implements ComplianceService {
 	
 	@Autowired
 	StatusRepository statusRepository;
+
+
+	
 	/**
 	 * 
 	 */
@@ -115,7 +118,7 @@ public class ComplianceServiceImp implements ComplianceService {
 							try {
 								
 								Compliance compliance = new Compliance(empresa, impExpType, causal, effectiveDateForCompliance , complianceEvaluationDate, created, updated, status);
-								complianList.add(complianceService.createCompliance(compliance));
+								complianList.add(createCompliance(compliance));
 								
 							}catch (org.springframework.dao.DataIntegrityViolationException exp) {
 								System.out.println("El registro para la empresa  " + empresa.getId() + " con ImpExpType " + impExpType.getId() + " y causal  " + causal.getId() + " Ya existe");
@@ -343,8 +346,79 @@ public class ComplianceServiceImp implements ComplianceService {
 		
 	}
 
+	@Override
+	public Iterable<Compliance> getAllCompliance() throws ComplianceException {
+		
+		Iterable<Compliance> complianceList = complianceRepository.findAll();
+		
+		return complianceList;
+	}
 
 
+	@Override
+	public void updateComplianceStatus() {
+		
+		Iterable<Compliance> complianceList = null;
+		Status statusCUMP = new Status();
+		Status statusXINCUMP = new Status();
+		Status statusINCUMP = new Status();
+		try {
+			statusCUMP = statusRepository.findByStatusKey(StatusKey.CUMP.toString());
+			statusXINCUMP = statusRepository.findByStatusKey(StatusKey.XINCUM.toString());
+			statusINCUMP = statusRepository.findByStatusKey(StatusKey.INCUM.toString());
+			
+			complianceList = this.getAllCompliance();
+			for(Compliance compliance : complianceList) {
+					Compliance complianceFounded = getComplianceById(compliance.getId());
+					Calendar today = Utileria.getCalendarToday();
+					int Today_VS_EffectiveDateForCompliance = Utileria.calendarcompareTo(today, complianceFounded.getEffectiveDateForCompliance());
+					int Today_VS_ComplianceEvaluationDate=Utileria.calendarcompareTo(today, complianceFounded.getComplianceEvaluationDate());
+					
+					// El dia de hoy es el mismo que el de vigencia y la proxima evaluacion  por lo tanto estaRA VIGENTE
+					if(Today_VS_EffectiveDateForCompliance == 0 && Today_VS_ComplianceEvaluationDate ==0) {
+						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.CUMP.toString())) {
+							complianceFounded.setStatus(statusCUMP);
+							updateCompliance(complianceFounded);
+							// Actualizar a CUMP
+						}
+						
+					}
+					
+					if(Today_VS_EffectiveDateForCompliance < 0 && Today_VS_ComplianceEvaluationDate < 0) {
+						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.CUMP.toString())) {
+							complianceFounded.setStatus(statusCUMP);
+							updateCompliance(complianceFounded);
+							// Actualizar a CUMP
+						}
+					}
+		
+					if(Today_VS_EffectiveDateForCompliance < 0 && (Today_VS_ComplianceEvaluationDate ==0 || Today_VS_ComplianceEvaluationDate > 0)) {
+						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.XINCUM.toString())) {
+							complianceFounded.setStatus(statusXINCUMP);
+							updateCompliance(complianceFounded);
+							// Actualizar a XINCUM
+						}
+						
+					}
+							
+					if (Today_VS_EffectiveDateForCompliance > 0 ) {
+						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.INCUM.toString())) {
+							complianceFounded.setStatus(statusINCUMP);
+							updateCompliance(complianceFounded);
+							// Actualizar a INCUM
+						}
+						
+					}
+					
+					
+			}
+			
+		} catch (ComplianceException e) {
+			e.printStackTrace();
+		}
+
+		
+	}
 
 	
 

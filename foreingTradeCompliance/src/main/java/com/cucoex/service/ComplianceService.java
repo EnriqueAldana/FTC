@@ -31,6 +31,9 @@ public interface ComplianceService {
 	
 	public Iterable<Compliance> getAllComplianceByCompanyAndImpExtTypeAndCausal(Company company,ImpExpType impExpType, Causal causal ) throws ComplianceException;
 	
+	public Iterable<Compliance> getAllCompliance() throws ComplianceException;
+
+	
 	public Iterable<Compliance> getAllComplianceByCompanyAndStatus(Company company, Status status ) throws ComplianceException;
 	
 	
@@ -49,5 +52,7 @@ public interface ComplianceService {
 	public Iterable<Compliance> createAllComplianceByCompanyId(Long id) throws ComplianceException;
 	
 	public Collection<Long> removeAllUseLessComplianceByCompanyId(Long id) throws ComplianceException;
+
+	void updateComplianceStatus();
 
 }

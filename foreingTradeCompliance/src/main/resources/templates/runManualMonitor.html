@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    
+    <title>Cumplimiento al Comercio Exterior</title>
+
+     <link th:rel="stylesheet" th:href="@{webjars/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.standalone.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/startbootstrap-sb-admin-2/4.0.6/css/sb-admin-2.min.css} "/>
+    <!-- <link href="css/sb-admin-2.min.css" rel="stylesheet"> -->
+    
+    
+</head>
+<body>
+
+<!-- Navigation -->
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+	<div th:include="side_bar.html" th:remove="tag"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+  
+        <div th:include="header_main.html" th:remove="tag"></div>
+      
+
+         <div th:include="runManualMonitorBody.html" th:remove="tag"></div>
+       
+   
+
+       <div th:include="footer.html" th:remove="tag"></div>
+        
+
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+
+
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/sb-admin-2.min.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/vendor/chart.js/Chart.min.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/chart-area-demo.js}"></script>
+<script th:src="@{/webjars/startbootstrap-sb-admin-2/4.0.6/js/demo/chart-pie-demo.js}"></script>
+
+  
+
+
+</body>
+
+
+
+</html>
+
+  <script type="text/javascript">
+$(document).ready(function () {
+	$('#causalesTotales').html("15");
+	$('#causalesCumplidas').html("10");
+	$('#causalesIncumplidas').html("5");
+	$('#porcientoCumplimientoCifra').html("66%");
+	$('#porcientoCumplimientoValor').html("66");
+	
+
+	var colors = ['#28a745','#F0C609','#EF0B16','#c3e6cb','#dc3545','#6c757d'];
+	/* 3 donut charts */
+	var donutOptions = {
+	  cutoutPercentage: 85, 
+	  legend: {position:'bottom', padding:5, labels: {pointStyle:'circle', usePointStyle:true}}
+	};	
+
+		
+	 $.ajax({
+	     data:"",
+	     url:'/getDashboardData',
+	     type: 'get',
+	     //dataType: 'json',
+	     beforeSend: function () {
+	         console.log("Cargando datos del Dashboard...")
+	     },
+	     success: function (dashboard) {  
+	    	 console.log("Respuesta de getDashboardData ");
+
+	    	 console.log("response " +dashboard);
+	    	 if(dashboard){
+	    		
+	    			$('#causalesTotales').html(dashboard.totalCausals);
+	    			$('#causalesCumplidas').html(dashboard.totalCausalCompliance);
+	    			$('#causalesIncumplidas').html(dashboard.totalCausalNonCompliance);
+	    			$('#porcientoCumplimientoCifra').html(dashboard.porcentajeCumplimiento+"%");
+	    			$('#porcientoCumplimientoValor').html(dashboard.porcentajeCumplimiento);
+	    			//$('myPieChart').html(dashboard.porcentajeCumplimiento);
+	    				var chDonutData1 = {
+						    labels: ['Cumplidas', 'Por Incumplir', 'No Cumplidas'],
+						    datasets: [
+						      {
+						        backgroundColor: colors.slice(0,3),
+						        borderWidth: 0,
+						        data: [dashboard.totalCausalCompliance, dashboard.totalCausalesXIncumplir, dashboard.totalCausalNonCompliance]
+						      }
+						    ]
+						};
+	    				
+	    			var chDonut1 = document.getElementById("chDonutCausals");
+					if (chDonut1) {
+					  new Chart(chDonut1, {
+					      type: 'pie',
+					      data: chDonutData1,
+					      options: donutOptions
+					  });
+					}
+		
+	    	 }
+	    	
+	    	 
+	     },
+	     error: function(errorresponse){
+	    	
+	    	 console.log("Ha habido un error en la respuesta de getDashboardData " +errorresponse);
+	     }
+	 });
+
+});
+</script>

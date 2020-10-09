@@ -51,6 +51,22 @@ public final class Utileria {
 	
 }
 	
+	/*
+	 * 
+	 * he method returns 0 if the time represented by the argument is equal to the time represented 
+	 * by this Calendar object; or a value less than 0 if the time of this Calendar is before the time represented 
+	 * by the argument; or a value greater than 0 if the time of this Calendar is after the time represented.
+	 */
+	public static int calendarcompareTo(Calendar fechaBase, Calendar fechaComparando) {
+
+		int ret=0;
+		ret = fechaBase.compareTo(fechaComparando);
+		return ret;
+
+	}
+	
+	
+	
 	public static Date convertStringToDate(String format, String string) {
 		
 		Date ret=null;
@@ -119,5 +135,9 @@ public final class Utileria {
         return set; 
     } 
 	
+	public static Calendar getCalendarToday() {
+		return Calendar.getInstance();
+
+	}
 
 }

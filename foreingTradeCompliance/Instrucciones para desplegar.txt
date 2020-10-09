@@ -1,0 +1,6 @@
+
+
+Base de datos.
+
+1.- Ejecutar Script Inicial.
+2.- Ejecutar la aplicacion y actualizar cada empresa una vez para generar los registros en la tabla de Compliance y se puedan ver los detalles de las causales asignadas.

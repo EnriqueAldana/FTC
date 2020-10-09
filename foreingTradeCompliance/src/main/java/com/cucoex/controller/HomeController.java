@@ -26,7 +26,7 @@ public class HomeController {
 		
 	
 		
-		return "index";
+		return "login";
 		//return "home";
 	}
 	
@@ -37,7 +37,13 @@ public class HomeController {
 		return "login";
 	}
 	
-
+	@PostMapping("/loginUser")
+	public String loginUser() {
+		
+		return "index";
+	}
+	
+	
 	 
 	
 }
