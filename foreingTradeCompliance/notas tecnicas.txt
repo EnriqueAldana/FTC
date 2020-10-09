@@ -1,3 +1,14 @@
+Despliegue
+1.- Configurar un perfil de MAven, seleccionando un RunMaven option, El goal debera ser clean install
+
+2.- Ejecutar el Run con el profile de Maven.
+Esto generara un archivo JAR Ejecutable en la carpeta target
+
+3.- Luego correrlo con
+java -jar ./CuCoEx-2.1.5.RELEASE.jar
+
+
+
 
 CRUD de Usuarios
 Blog

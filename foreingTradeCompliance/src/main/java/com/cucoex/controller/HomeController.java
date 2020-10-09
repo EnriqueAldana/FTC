@@ -21,15 +21,23 @@ public class HomeController {
 	
 	
 	// Inicio de la aplicacion mosyrando el tablero
-	@GetMapping({"/","/index.html"})
+	@GetMapping({"/"})
 	public String index(Model model) {
 		
 	
 		
-		return "login";
+		return "index";
 		//return "home";
 	}
 	
+	@GetMapping({"/dashboard"})
+	public String dashboard(Model model) {
+		
+	
+		
+		return "index";
+		//return "home";
+	}
 	
 	
 	@GetMapping({"/login","/login.html"})
@@ -43,7 +51,10 @@ public class HomeController {
 		return "index";
 	}
 	
-	
+	@GetMapping({"/error"})
+	public String error() {
+		return "error";
+	}
 	 
 	
 }
