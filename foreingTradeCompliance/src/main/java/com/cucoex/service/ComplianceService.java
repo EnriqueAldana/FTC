@@ -53,6 +53,11 @@ public interface ComplianceService {
 	
 	public Collection<Long> removeAllUseLessComplianceByCompanyId(Long id) throws ComplianceException;
 
-	void updateComplianceStatus();
+	
+
+	void updateAllComplianceStatus();
+
+
+	void updateComplianceStatusByCompliance(Compliance compliance);
 
 }

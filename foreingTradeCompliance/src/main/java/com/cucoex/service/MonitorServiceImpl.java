@@ -49,9 +49,9 @@ public class MonitorServiceImpl {
 		
 	}
 
-	public void updateComplianceStatus()  {
+	public void updateAllComplianceStatus()  {
 		
-		 complianceService.updateComplianceStatus();
+		 complianceService.updateAllComplianceStatus();
 		
 		
 	}

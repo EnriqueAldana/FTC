@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.apache.juli.logging.Log;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,7 @@ import com.cucoex.exception.UsernameOrIdNotFound;
 import com.cucoex.repository.ComplianceRepository;
 import com.cucoex.repository.StatusRepository;
 import com.cucoex.repository.UserRepository;
+import com.cucoex.schedule.ScheduledTasks;
 import com.cucoex.service.CausalServiceImpl;
 import com.cucoex.service.CompanyService;
 import com.cucoex.service.ComplianceService;
@@ -66,6 +68,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CausalController {
 	
+	private static final org.slf4j.Logger log = LoggerFactory.getLogger(CausalController.class);
+    
 	private final String TAB_FORM = "formTab";
 	private final String TAB_LIST = "listTab";
 
@@ -98,7 +102,8 @@ public class CausalController {
 	  public String getAssignedCausalsList(Model model) {
 	  
 	  // Aqui va el numero de la empresa Asignada al usuario // TODO Auto-generated
-	   System.out.println("Entrando a /assignedCausals" ); 
+	
+	   log.info("Entrando a /assignedCausals" ); 
 	   
 	  User user =
 	  new User(); user.setId(1L);
@@ -117,7 +122,6 @@ public class CausalController {
 		  	
 	  model.addAttribute("editMode","false");  	
 	  return "assignedCausals";
-	  //return "assignedCausalToCompany";
 	  }
 	 
 	
@@ -125,7 +129,7 @@ public class CausalController {
 	@GetMapping("/editAssignedCausal/{companyId}/{impExpTypeId}/{causalId}")
 	public String getEditCompanyForm(Model model, @PathVariable(name ="companyId")Long companyId, @PathVariable(name ="impExpTypeId")Long impExpTypeId, @PathVariable(name ="causalId")Long causalId)throws Exception{
 	
-		System.out.println("Entrando a /editCausal/{companyId}/{impExpTypeId}/{causalId} con Ids " + companyId.toString() + impExpTypeId.toString() + causalId.toString());
+		log.info("Entrando a /editCausal/{companyId}/{impExpTypeId}/{causalId} con Ids " + companyId.toString() + impExpTypeId.toString() + causalId.toString());
 		Company companyToEdit;
 		companyToEdit = companyService.getCompanyById(companyId);
 		ImpExpType impExpTypeToEdit = new ImpExpType();
@@ -166,7 +170,6 @@ public class CausalController {
 
 		
 		return "assignedCausals/assignedCausal-view";
-		//return "indexDatePicker";
 		
  		
 	}
@@ -178,69 +181,6 @@ public class CausalController {
 	}
 	
 	
-	
-	
-	
-	/*
-	 * @PostMapping({"/assignedCausals"}) public String
-	 * getAssignedCausalsListPost(@Valid @ModelAttribute("assinedCausalForm")
-	 * AssignedCausalForm assinedCausalForm, BindingResult result, Model model) {
-	 * 
-	 * // Aqui va el numero de la empresa Asignada al usuario // TODO Auto-generated
-	 * catch block System.out.println("Entrando a /assignedCausals" ); User user =
-	 * new User(); user.setId(1L);
-	 * 
-	 * try { model.addAttribute("companyList",
-	 * userService.getAllCompaniesByUser(user));
-	 * //userService.getAllCompaniesByUser(user).forEach(action); Company
-	 * firstCompany =
-	 * userService.getAllCompaniesByUser(user).stream().findFirst().get();
-	 * model.addAttribute("impexpTypeList",firstCompany.getImpExpTypeList());
-	 * 
-	 * model.addAttribute("assignedCausalsList",causalService.
-	 * getAllCausalByCompanyId(1L));
-	 * 
-	 * } catch (CausalException e) {
-	 * 
-	 * e.printStackTrace(); } catch (UsernameOrIdNotFound e) {
-	 * 
-	 * }
-	 * 
-	 * baseAttributerForAssignedCausalForm(model, new Causal(), TAB_LIST );
-	 * 
-	 * return "assignedCausals"; }
-	 */
-	
-
-	@GetMapping({"/tableJSON"})
-	public String getStatus(Model model) {
-		
-		
-		
-		return "tableJSON";
-	}
-	
-	
-	/*
-	 * @PostMapping({"/assinedCausalForm"}) public String
-	 * loadAssignedCausalsList(@Valid @ModelAttribute("AssignedForm")
-	 * AssignedCausalForm assinedCausalForm, BindingResult result, Model model) {
-	 * 
-	 * // Aqui va el numero de la empresa Asignada al usuario // TODO Auto-generated
-	 * catch block User user = new User(); user.setId(1L);
-	 * 
-	 * try { model.addAttribute("companyList",
-	 * userService.getAllCompaniesByUser(user));
-	 * 
-	 * } catch (UsernameOrIdNotFound e) {
-	 * 
-	 * }
-	 * 
-	 * baseAttributerForAssignedCausalForm(model, new Causal(), TAB_LIST );
-	 * 
-	 * return "assignedCausals"; }
-	 */
-
 
 	
 	private void baseAttributerForAssignedCausalForm(Model model, Compliance compliance,String activeTab) {

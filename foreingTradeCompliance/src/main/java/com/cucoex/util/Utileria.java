@@ -139,5 +139,11 @@ public final class Utileria {
 		return Calendar.getInstance();
 
 	}
+	
+	public static Date getCalendarTodayDate() {
+		
+		
+		return Calendar.getInstance().getTime();
+	}
 
 }

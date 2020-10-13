@@ -1,10 +1,12 @@
 package com.cucoex.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import com.cucoex.entity.Status;
 import com.cucoex.exception.CompanyException;
 import com.cucoex.exception.ComplianceException;
 import com.cucoex.repository.StatusRepository;
+import com.cucoex.schedule.ScheduledTasks;
 import com.cucoex.service.CompanyService;
 import com.cucoex.service.ComplianceService;
 import com.cucoex.service.MonitorServiceImpl;
@@ -25,6 +28,9 @@ import com.cucoex.util.Utileria;
 
 @Controller
 public class MonitorController {
+	
+	private static final org.slf4j.Logger log = LoggerFactory.getLogger(MonitorController.class);
+     
 	
 	@Autowired
 	MonitorServiceImpl monitorService;
@@ -38,7 +44,7 @@ public class MonitorController {
 	// Ejecuta el monitor
 			@GetMapping({"/runMonitor"})
 			public String getRunMonitor() {
-				System.out.println("Ejecución manual del monitor");
+				log.info("Ejecución manual del monitor");
 				/*
 				 * El monitor es una tarea que tiene como objetivo valorar el estado de la causal
 				 * en funcion de las fechas de vigencia, configuracion de la empresa y fecha de proxima verificación
@@ -57,7 +63,7 @@ public class MonitorController {
 				 * 1.- Cuando al fecha es igual o mayor a la fecha de vigencia.
 				 * 1
 				 */
-				monitorService.updateComplianceStatus();
+				monitorService.updateAllComplianceStatus();
 				return "runManualMonitor";
 			}
 

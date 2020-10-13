@@ -356,7 +356,7 @@ public class ComplianceServiceImp implements ComplianceService {
 
 
 	@Override
-	public void updateComplianceStatus() {
+	public void updateAllComplianceStatus() {
 		
 		Iterable<Compliance> complianceList = null;
 		Status statusCUMP = new Status();
@@ -369,48 +369,8 @@ public class ComplianceServiceImp implements ComplianceService {
 			
 			complianceList = this.getAllCompliance();
 			for(Compliance compliance : complianceList) {
-					Compliance complianceFounded = getComplianceById(compliance.getId());
-					Calendar today = Utileria.getCalendarToday();
-					int Today_VS_EffectiveDateForCompliance = Utileria.calendarcompareTo(today, complianceFounded.getEffectiveDateForCompliance());
-					int Today_VS_ComplianceEvaluationDate=Utileria.calendarcompareTo(today, complianceFounded.getComplianceEvaluationDate());
-					
-					// El dia de hoy es el mismo que el de vigencia y la proxima evaluacion  por lo tanto estaRA VIGENTE
-					if(Today_VS_EffectiveDateForCompliance == 0 && Today_VS_ComplianceEvaluationDate ==0) {
-						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.CUMP.toString())) {
-							complianceFounded.setStatus(statusCUMP);
-							updateCompliance(complianceFounded);
-							// Actualizar a CUMP
-						}
-						
-					}
-					
-					if(Today_VS_EffectiveDateForCompliance < 0 && Today_VS_ComplianceEvaluationDate < 0) {
-						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.CUMP.toString())) {
-							complianceFounded.setStatus(statusCUMP);
-							updateCompliance(complianceFounded);
-							// Actualizar a CUMP
-						}
-					}
-		
-					if(Today_VS_EffectiveDateForCompliance < 0 && (Today_VS_ComplianceEvaluationDate ==0 || Today_VS_ComplianceEvaluationDate > 0)) {
-						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.XINCUM.toString())) {
-							complianceFounded.setStatus(statusXINCUMP);
-							updateCompliance(complianceFounded);
-							// Actualizar a XINCUM
-						}
-						
-					}
-							
-					if (Today_VS_EffectiveDateForCompliance > 0 ) {
-						if (!complianceFounded.getStatus().getStatusKey().equals(StatusKey.INCUM.toString())) {
-							complianceFounded.setStatus(statusINCUMP);
-							updateCompliance(complianceFounded);
-							// Actualizar a INCUM
-						}
-						
-					}
-					
-					
+					Compliance complianceFounded = getComplianceById(compliance.getId());		
+					updateComplianceStatusAccordingToday(compliance);
 			}
 			
 		} catch (ComplianceException e) {
@@ -421,5 +381,77 @@ public class ComplianceServiceImp implements ComplianceService {
 	}
 
 	
+	
+	@Override
+	public void updateComplianceStatusByCompliance(Compliance compliance) {
+		
+		
+		try {
+			
+			updateComplianceStatusAccordingToday(compliance);
+
+		} catch (ComplianceException e) {
+			e.printStackTrace();
+		}
+
+		
+	}
+	
+	private void updateComplianceStatusAccordingToday(Compliance complianceToUpdate) throws ComplianceException{
+		
+		Status statusCUMP = new Status();
+		Status statusXINCUMP = new Status();
+		Status statusINCUMP = new Status();
+		statusCUMP = statusRepository.findByStatusKey(StatusKey.CUMP.toString());
+		statusXINCUMP = statusRepository.findByStatusKey(StatusKey.XINCUM.toString());
+		statusINCUMP = statusRepository.findByStatusKey(StatusKey.INCUM.toString());
+		
+		Calendar today = Utileria.getCalendarToday();
+		
+		Compliance compliance = getComplianceById(complianceToUpdate.getId());
+		int Today_VS_EffectiveDateForCompliance = Utileria.calendarcompareTo(today, compliance.getEffectiveDateForCompliance());
+		int Today_VS_ComplianceEvaluationDate=Utileria.calendarcompareTo(today, compliance.getComplianceEvaluationDate());
+		
+		
+		// El dia de hoy es el mismo que el de vigencia y la proxima evaluacion  por lo tanto estaRA VIGENTE
+		if(Today_VS_EffectiveDateForCompliance == 0 && Today_VS_ComplianceEvaluationDate ==0) {
+			if (!compliance.getStatus().getStatusKey().equals(StatusKey.CUMP.toString())) {
+				compliance.setStatus(statusCUMP);
+				updateCompliance(compliance);
+				// Actualizar a CUMP
+			}
+			
+		}
+		
+		if(Today_VS_EffectiveDateForCompliance < 0 && Today_VS_ComplianceEvaluationDate < 0) {
+			if (!compliance.getStatus().getStatusKey().equals(StatusKey.CUMP.toString())) {
+				compliance.setStatus(statusCUMP);
+				updateCompliance(compliance);
+				// Actualizar a CUMP
+			}
+		}
+
+		if(Today_VS_EffectiveDateForCompliance < 0 && (Today_VS_ComplianceEvaluationDate ==0 || Today_VS_ComplianceEvaluationDate > 0)) {
+			if (!compliance.getStatus().getStatusKey().equals(StatusKey.XINCUM.toString())) {
+				compliance.setStatus(statusXINCUMP);
+				updateCompliance(compliance);
+				// Actualizar a XINCUM
+			}
+			
+		}
+				
+		if (Today_VS_EffectiveDateForCompliance > 0 ) {
+			if (!compliance.getStatus().getStatusKey().equals(StatusKey.INCUM.toString())) {
+				compliance.setStatus(statusINCUMP);
+				updateCompliance(compliance);
+				// Actualizar a INCUM
+			}
+			
+		}
+		
+	}
+
+	
+
 
 }

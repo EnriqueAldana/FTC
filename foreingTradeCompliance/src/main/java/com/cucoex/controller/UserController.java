@@ -1,5 +1,6 @@
 package com.cucoex.controller;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +12,12 @@ import com.cucoex.entity.User;
 import com.cucoex.exception.CustomeFieldValidationException;
 import com.cucoex.exception.UsernameOrIdNotFound;
 import com.cucoex.repository.RoleRepository;
+import com.cucoex.schedule.ScheduledTasks;
 import com.cucoex.service.CompanyService;
 import com.cucoex.service.UserService;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +40,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class UserController {
 
+	
+	private static final org.slf4j.Logger log = LoggerFactory.getLogger(UserController.class);
+   
 	private final String TAB_FORM = "formTab";
 	private final String TAB_LIST = "listTab";
 	
@@ -201,12 +207,14 @@ public class UserController {
 	@GetMapping("/deleteUser/{id}")
 	public String deleteUser(Model model, @PathVariable(name="id")Long id) {
 		try {
-			System.out.println("Borrando usuario " +id);
+		
+			log.info("Borrando usuario " +id);
 			userService.deleteUser(id);
 		
 		} 
 		catch (UsernameOrIdNotFound uoin) {
-			System.out.println("Excepcion al borrar usuario " +id);
+			System.out.println();
+			log.error("Excepcion al borrar usuario " +id);
 			model.addAttribute("listErrorMessage",uoin.getMessage());
 		}finally {
 			model.addAttribute("userList", userService.getAllUsers());

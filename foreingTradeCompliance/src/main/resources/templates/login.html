@@ -18,14 +18,7 @@
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 <style>
-bg-login-imageCUCOEX{
-background-image: background: url(img/CuCoEx.png) no-repeat;
-background-size: cover;
-background-repeat: no-repeat;
-height: 100%;
-font-family: 'Numans', sans-serif;
-content: url("/img/CuCoEx.png")
-}
+
 </style>
 </head>
 
@@ -46,7 +39,7 @@ content: url("/img/CuCoEx.png")
             <div class="row">
               <!-- <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> -->
               <div class="col-lg-6 d-none d-lg-block">
-              <img src="img/CuCoEx.png" alt="Girl in a jacket" style="width:900px;height:485px;">
+              <img src="img/CuCoEx.png" alt="Fondo" style="width:900px;height:430px;">
               </div>
               <!-- <div class="col-lg-6 d-none d-lg-block " href="img/CuCoEx.png"></div> -->
              
@@ -59,9 +52,6 @@ content: url("/img/CuCoEx.png")
                   
                   <form class="form" role="form" autocomplete="off"  th:object="${userLoginForm}" th:action="@{/loginUser}" method="post">
                 
-                  <div class="form-group">
-                      <input type="rfc" class="form-control form-control-user" id="Rfc_empresa" name="rfc" aria-describedby="rfcHelp" placeholder="Escriba el RFC de la empresa...">
-                    </div>
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user" id="InputEmail" name="email" aria-describedby="emailHelp" placeholder="Escriba su correo...">
                     </div>
