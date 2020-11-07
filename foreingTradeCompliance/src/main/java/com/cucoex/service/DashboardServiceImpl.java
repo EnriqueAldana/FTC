@@ -29,7 +29,7 @@ import java.util.List;
 public class DashboardServiceImpl {
 	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	@Autowired
 	CausalService causalService;
 	

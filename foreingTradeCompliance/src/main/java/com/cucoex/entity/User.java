@@ -74,11 +74,11 @@ public class User implements Serializable {
 
 	@Column(nullable = false)
 	@NotEmpty
-	@Size(min = 4, max = 10)
+	@Size(min=1, max=1254)
 	private String password;
 
 	@Transient
-	@Size(min = 4, max = 10)
+	@Size(min=1, max=1254)
 	private String confirmPassword;
 	
 	@Column(nullable = false,columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -92,14 +92,15 @@ public class User implements Serializable {
 	
 	
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), 
+	inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
 	
-	@ManyToMany(fetch = FetchType.LAZY) 
-	@JoinTable(name="users_companies" ,joinColumns=@JoinColumn(name="user_id")
-	,inverseJoinColumns=@JoinColumn(name="company_id")) 
+	@ManyToMany(fetch = FetchType.EAGER) 
+	@JoinTable(name="users_companies" ,joinColumns=@JoinColumn(name="user_id"),
+	inverseJoinColumns=@JoinColumn(name="company_id")) 
 	private Set<Company> companies;
 	
 	

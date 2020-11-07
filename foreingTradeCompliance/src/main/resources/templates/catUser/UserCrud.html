@@ -4,11 +4,12 @@
 		
 		<ul class="nav nav-tabs justify-content-end">
 			<li class="nav-item">
-			<a class="nav-link " th:classappend=" ${listTab}" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="false">Lista</a>
+			<a class="nav-link " th:classappend=" ${listTab}" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">Lista</a>
 			</li>
-			<li class="nav-item">
-			<a class="nav-link" th:classappend=" ${formTab}" id="form-tab" data-toggle="tab" href="#form" role="tab" aria-controls="form" aria-selected="true">Agrega</a>				   	
-			</li>
+			
+				<li th:if=" (${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}) or (${#authorization.expression('hasRole(''ROLE_ADMIN'')')}) " class="nav-item">
+					<a class="nav-link" th:classappend=" ${formTab}" id="form-tab" data-toggle="tab" href="#form" role="tab" aria-controls="form" aria-selected="false">Agrega</a>				   	
+				</li>
 			
 		</ul>
 		
@@ -26,16 +27,16 @@
 					
 				</div>
 			</div>
-			<div class="tab-pane fade show" th:classappend=" ${formTab}" id="form" role="tabpanel" aria-labelledby="form-tab">
-				<div class="card">
-					<div class="card-header">
-						<h4>Información de usuario</h4>
-					</div>
-					<div class="card-body">
-						<div th:include="catUser/UserForm.html" th:remove="tag"></div>
+				<div th:if=" (${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}) or (${#authorization.expression('hasRole(''ROLE_ADMIN'')')}) " class="tab-pane fade show" th:classappend=" ${formTab}" id="form" role="tabpanel" aria-labelledby="form-tab">
+					<div class="card">
+						<div class="card-header">
+							<h4>Información de usuario</h4>
+						</div>
+						<div class="card-body">
+							<div th:include="catUser/UserForm.html" th:remove="tag"></div>
+						</div>
 					</div>
 				</div>
-			</div>
 		</div>
 	</div>
 </div>

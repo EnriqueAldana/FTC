@@ -110,8 +110,7 @@ public class Causal implements Serializable {
 		
 	}
 
-
-
+      
 
 	/**
 	 * @param id
@@ -440,6 +439,16 @@ public class Causal implements Serializable {
 				+ ", causalOsCe=" + causalOsCe + ", causalClasification=" + causalClasification + ", causalExclusive="
 				+ causalExclusive + ", causalCumplimiento=" + causalCumplimiento + ", causalType=" + causalType
 				+ ", created=" + created + ", updated=" + updated + ", instructionList=" + instructionList + "]";
+	}
+
+
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 

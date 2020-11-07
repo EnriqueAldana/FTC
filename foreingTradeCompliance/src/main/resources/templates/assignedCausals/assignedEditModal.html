@@ -215,7 +215,7 @@ function getFormattedDate(dateString) {
 	  console.log("Dia " + day); */
 	  
 	  var dateRet = dateString.slice(0, 10).split('-');   
-	  return  dateRet[2]  +'-'+ dateRet[1] +'-'+ dateRet[0]; // 30/10/2010
+	  return  dateRet[0]  +'-'+ dateRet[1] +'-'+ dateRet[2]; // 30/10/2010
 	} 
 	
  function validateForm(){
@@ -285,7 +285,7 @@ function getFormattedDate(dateString) {
 		 
 		 $.ajax({
 		     data:parametrosJSON,
-		     url:'/editAssignedCausal',
+		     url:'api/editAssignedCausal',
 		     type: 'post',
 		     //dataType: 'json',
 		     beforeSend: function () {
@@ -339,23 +339,23 @@ function getFormattedDate(dateString) {
 					
 		$.ajax({ 
 	          type: "GET", 
-	          url: 'getCompliance/'+companyid+'/'+ expimptypeid +'/'+causalid ,
+	          url: 'api/getCompliance/'+companyid+'/'+ expimptypeid +'/'+causalid ,
 	          dataType: 'json',
 	          success: function(data){ 
 	           /*  htmlData = '<ul><li>title: '+data.first_name+'</li><li>age: '+data.age+'</li></ul>'; */
-	           console.log(data.company.companyName);
+	           console.log("CompanyID " + data.companyId);
 	          	$('#complianceIdHiddenInput').val(data.id);
 				console.log(data.id);
-	            $('#causalDescripcion').text(data.causal.causalDescription);
-	            $('#causalCumplimiento').text(data.causal.causalCumplimiento);
+	            $('#causalDescripcion').text(data.causalDescription);
+	            $('#causalCumplimiento').text(data.causalCumplimiento);
 	            
-	            $.each(data.causal.instructionList, function(key, value) {
+	            $.each(data.instructionList, function(key, value) {
 	            	console.log("key " + key); 
 	            	console.log("value " + value['id']); 
 	            	console.log("value " + value['instructionDescription']); 
 	            	});
 	            
-	            var json = eval( data.causal.instructionList );
+	            var json = eval( data.instructionList );
 
 	            Object.keys( json ).sort(function( a,b ) {
 	                return json[a].instructionOrder.localeCompare( json[b].instructionOrder );
@@ -371,11 +371,14 @@ function getFormattedDate(dateString) {
 	            html_body += '</tbody>';
 	            $('#dtInstructions').html( html_head  + html_body);
 	            
-	            if(data.isCompliance == true){	
+	            console.log("Compliance Id " + data.id);
+	            console.log("isCompliance " + data.isCompliance);
+	            if(data.isCompliance == 'true'){	
 		            $('#isCompliance').prop('checked', true);		
 	            }
 	            console.log("data.complianceEvaluationDate " + getFormattedDate(data.complianceEvaluationDate));
 	            $('#fechaProximaVerificacion').val(getFormattedDate(data.complianceEvaluationDate));
+	            console.log("data.effectiveDateForCompliance " + getFormattedDate(data.effectiveDateForCompliance));
 	            $('#fechaVigencia').val(getFormattedDate(data.effectiveDateForCompliance));
 	            
 	            

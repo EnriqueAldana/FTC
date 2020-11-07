@@ -1,6 +1,12 @@
  <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Lorena Rodriguez</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                <!--  th:if="${session.userOnSession != null}"> -->
+                <!-- <span class="font-italic" th:text="${#authentication.getPrincipal().getUsername()}"></span>
+                </span> -->
+                <span class="font-italic" th:text="${#httpServletRequest.remoteUser}"></span>
+                </span>
+                
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
@@ -22,8 +28,8 @@
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Salir
                 </a>
-                
-                
+                <!-- <a class="nav-link" href="#" th:href="@{/logout}"><span>logout  </span><span class="float-right"><i class="fas fa-sign-out-alt"></i></span></a>
+                --> 
               </div>
             </li>
             
@@ -32,9 +38,9 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Confirmar salir</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">¡Confirmar salir!</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
+          <span aria-hidden="true">x</span>
         </button>
       </div>
       <div class="modal-body">
@@ -58,6 +64,6 @@ function confirmCompanyDelete(id){
 
 function exit(){
 	//var id = $("#companyIdHiddenInput").val();
-    window.location = "login";
+    window.location = "/login?logout";
 }
 </script>

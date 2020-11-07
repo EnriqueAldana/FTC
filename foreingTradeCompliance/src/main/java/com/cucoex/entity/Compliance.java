@@ -4,6 +4,7 @@
 package com.cucoex.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,13 +72,17 @@ public class Compliance  implements Serializable{
 	
 	@Column(nullable = false)
 	@NotNull(message = "Se debe especificar una fecha para vigencia")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	//@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar effectiveDateForCompliance;          // Fecha de Vigencia para cumplimiento
+	//private LocalDate effectiveDateForCompliance;          // Fecha de Vigencia para cumplimiento
 	
 	@Column(nullable = false)
 	@NotNull(message = "Se debe especificar una fecha para proxima verificacion")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	//@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar complianceEvaluationDate;				//Fecha en que fue ejecutado el monitor para validar el cumplimiento
+	//private LocalDate complianceEvaluationDate;				//Fecha en que fue ejecutado el monitor para validar el cumplimiento
 			
 	
 

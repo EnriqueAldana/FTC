@@ -64,7 +64,7 @@ public class ImpExpType implements Serializable {
 	private Calendar updated;
 
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name="impexptypes_causales"
 		,joinColumns=@JoinColumn(name="impexptype_id")
 		,inverseJoinColumns=@JoinColumn(name="causal_id"))

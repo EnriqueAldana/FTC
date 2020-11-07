@@ -147,12 +147,14 @@ public class Company implements Serializable {
 			 * public void setCompanyConfiguration(CompanyConfiguration
 			 * companyConfiguration) { this.companyConfiguration = companyConfiguration; }
 			 */
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "companies_impexptypes", joinColumns = @JoinColumn(name = "company_id"), inverseJoinColumns = @JoinColumn(name = "impexptype_id"))
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "companies_impexptypes", joinColumns = @JoinColumn(name = "company_id"), 
+	inverseJoinColumns = @JoinColumn(name = "impexptype_id"))
 	@OrderBy(value = "id ASC")
 	private Set<ImpExpType> impExpTypeList;
 
-	
+	@ManyToMany(mappedBy="companies")
+	private Set<User> users ;
 	
 
 
@@ -590,6 +592,20 @@ public class Company implements Serializable {
 		} else if (!isEnabled.equals(other.isEnabled))
 			return false;
 		return true;
+	}
+
+	/**
+	 * @return the users
+	 */
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param users the users to set
+	 */
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 }

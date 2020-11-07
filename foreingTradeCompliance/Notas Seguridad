@@ -1,0 +1,30 @@
+
+Segurodad basica.
+Si la seguridad no esta configurada, el usaurio por defecto es :
+user y la contraseña es la que emite el aplicativo en la consola.
+
+Seguridad desde el archivo de propiedades:
+spring.security.user.name=jeas
+spring.security.password=123456
+
+Bibliografia
+
+EJEMPLO
+https://github.com/cavanosa/tutorial_jwt_BACK
+
+REST
+https://www.youtube.com/watch?v=3Y21aq-6_OE
+JWS min 55:03
+	
+
+CRUD
+https://inezpre5.wordpress.com/2018/05/01/tutorial-crud-spring-boot-aplicacion-con-bases-de-datos/
+
+
+
+Login
+https://www.youtube.com/watch?v=FzoeEf32Qus
+
+Recomedaciones para seguridad en la sesion
+
+https://www.baeldung.com/spring-security-session

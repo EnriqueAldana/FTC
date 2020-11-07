@@ -44,15 +44,20 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Catalogos:</h6>
-            <a class="collapse-item" href="companies">Empresas</a>
+            <span th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+    			<a class="collapse-item" href="companies">Empresas</a>
+    		</span>	
+            
              <a class="collapse-item" href="users">Usuarios</a>
             
             <a class="collapse-item" href="cards.html"></a>
             <h6 class="collapse-header">Sistema:</h6>
              <a class="collapse-item" href="#">Periodos de alerta</a>
             <a class="collapse-item" href="#">Notificaciones</a>
-            <a class="collapse-item" href="/emailTest">Envio email de Prueba</a>
-            <
+            <span th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+    			<a class="collapse-item" href="/emailTest">Envio email de Prueba</a>
+    		</span>	
+      
           </div>
         </div>
       </li>
@@ -69,8 +74,11 @@
            <h6 class="collapse-header">Causales asignadas</h6>
             <a class="collapse-item" href="assignedCausals">Causales Asignadas</a>
             
-            <h6 class="collapse-header">Monitor de causales</h6>
-            <a class="collapse-item" href="/runMonitor">Ejecución del monitor</a>
+            <span th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
+    			<<h6 class="collapse-header">Monitor de causales</h6>
+            	<a class="collapse-item" href="/runMonitor">Ejecución del monitor</a>
+    		</span>	
+            
            
           </div>
         </div>

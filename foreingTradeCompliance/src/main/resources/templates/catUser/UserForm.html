@@ -1,109 +1,193 @@
-<form class="form" role="form" autocomplete="off"  th:object="${userForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editUser} :@{/userForm})" method="post">
-	<!--Es necesario para poder pasar la validacion del Model-->
-	<input class="form-control" type=hidden th:field="${userForm.id}"  th:if="${editMode}">
-	<input class="form-control" type=hidden name="password" value="xxxx" th:if="${editMode}">
-	
-	<div class="form-group row">
-		<label class="col-lg-3 col-form-label form-control-label">Nombre</label>
-		<div class="col-lg-9">
-			<input class="form-control" type="text" th:field="${userForm.username}" th:disabled="${disableFields}" placeholder="Escriba un nombre de usuario"
-			required="required">
-			<div class="alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
-			 <div class="valid-feedback">
-          		Looks good!
-        	</div>
-		</div>
-	</div>
-	<div class="form-group row">
-		<label class="col-lg-3 col-form-label form-control-label">Apellido paterno</label>
-		<div class="col-lg-9">
-			<input class="form-control" type="text" th:field="${userForm.firstName}" th:disabled="${disableFields}" placeholder="Escriba el apellido paterno"
-			required="required">
-					<div class="alert-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>
-	
-		</div>
-	</div>
-	<div class="form-group row">
-		<label class="col-lg-3 col-form-label form-control-label">Apellido materno</label>
-		<div class="col-lg-9">
-			<input class="form-control" type="text" th:field="${userForm.lastName}" th:disabled="${disableFields}" placeholder="Escriba el apellido materno"
-			required="required">
-			<div class="alert-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</div>
-	
-		</div>
-	</div>
-	<div class="form-group row">
-		<label class="col-lg-3 col-form-label form-control-label">Correo</label>
-		<div class="col-lg-9">
-			<input class="form-control" type="email" th:field="${userForm.email}" th:disabled="${disableFields}" placeholder="Escriba un correo electrónico"
-			required="required">
-			<div class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</div>
-		</div>
-	</div>
-	
-	<div class="form-group row">
-		<label th:text="Roles" class="col-lg-3 col-form-label form-control-label"></label>
-		<div class="col-lg-9">
-			<select multiple class="form-control" th:size="${signup}?1:3" th:field="${userForm.roles}" th:disabled="${disableFields}" placeholder="Seleccione un rol"
-			required="required">
-				<option th:each="role :${roles}" th:value="${role.id}" th:text="${role.name}">
-				</option>
-			</select>
-			<div class="alert-danger" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Name Error</div>
-		</div>
-	</div>
-	
-	<div class="form-group row">
-		<label th:text="Empresas" class="col-lg-3 col-form-label form-control-label"></label>
-		<div class="col-lg-9">
-			<select multiple class="form-control" th:size="${signup}?1:3" th:field="${userForm.companies}" th:disabled="${disableFields}" placeholder="Seleccione una empresa"
-			required="required">
-				<option th:each="company :${companyList}" th:value="${company.id}" th:text="${company.companyName}">
-				</option>
-			</select>
-			<div class="alert-danger" th:if="${#fields.hasErrors('companies')}" th:errors="*{companies}">Name Error</div>
-		</div>
-	</div>
-	
-	<div class="form-group row" >
-   <!--  Descomentar cuando se resuelva la funcionalidad del boton Actualizar contraseña
-	<div class="form-group row" th:if="${editMode==null or editMode==false}"> -->
-		<label class="col-lg-3 col-form-label form-control-label">Contraseña</label>
-		<div class="col-lg-9">
-			<input class="form-control" type="password" th:field="${userForm.password}" th:disabled="${disableFields}" placeholder="Escriba una contraseña"
-			required="required">
-			<div class="alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</div>
-		</div>
-	</div>
-	<div class="form-group row" >
-	<!-- <div class="form-group row" th:if="${editMode==null or editMode==false}"> -->
-		<label class="col-lg-3 col-form-label form-control-label">Confirma contraseña</label>
-		<div class="col-lg-9">
-			<input class="form-control" type="password" th:field="${userForm.confirmPassword}" th:disabled="${disableFields}" placeholder="Confirme la contraseña anterior"
-			required="required">
-			<div class="alert-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Name Error</div>
-		</div>
-	</div>
-	
-	
 
-	
-	
-	
-	
-	
-	<div class="form-group row">
-		<div class="col-lg-12 text-center">
-			<a class="btn btn-secondary"  th:href="@{'/userForm/cancel'}">Cancelar</a>
-			<!-- ToDO revisar funcionalidad de abrir pop up de actualizar contraseña -->
-			<!-- <button type="button" class="btn btn-secondary" data-toggle="modal" th:if="${editMode}" data-target="#changePasswordModal">Cambio de contraseña</button> -->
-			<input type="submit" class="btn btn-primary"
-				value="Guardar " th:value="${editMode}?'Actualizar usuario':'Guardar usuario'">
+<div th:with="disableFields=${editMode} and ${#authorization.expression('hasRole(''ROLE_USER'')')}">
+	<form class="form" role="form" autocomplete="off"  th:object="${userForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editUser} :@{/userForm})" method="post">
+		<!--Es necesario para poder pasar la validacion del Model-->
+		<input class="form-control" type=hidden th:field="${userForm.id}"  th:if="${editMode}">
+		<input class="form-control" type=hidden name="password" value="xxxx" th:if="${editMode}">
+		
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label form-control-label">Nombre</label>
+			<div class="col-lg-9">
+				<input class="form-control" type="text" th:field="${userForm.username}" th:disabled="${disableFields}" placeholder="Escriba un nombre de usuario"
+				required="required">
+				<div class="alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
+				 <div class="valid-feedback">
+	          		Looks good!
+	        	</div>
+			</div>
 		</div>
-	</div>
-	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error MEssage</div>
-	<div class="alert alert-success text-center d-none" id="formSuccess" th:if="${editMode}" >Success MEssage</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label form-control-label">Apellido paterno</label>
+			<div class="col-lg-9">
+				<input class="form-control" type="text" th:field="${userForm.firstName}" th:disabled="${disableFields}" placeholder="Escriba el apellido paterno"
+				required="required">
+						<div class="alert-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>
+		
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label form-control-label">Apellido materno</label>
+			<div class="col-lg-9">
+				<input class="form-control" type="text" th:field="${userForm.lastName}" th:disabled="${disableFields}" placeholder="Escriba el apellido materno"
+				required="required">
+				<div class="alert-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</div>
+		
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label form-control-label">Correo</label>
+			<div class="col-lg-9">
+				<input class="form-control" type="email" th:field="${userForm.email}" th:disabled="${disableFields}" placeholder="Escriba un correo electrónico"
+				required="required">
+				<div class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</div>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label th:text="Roles" class="col-lg-3 col-form-label form-control-label"></label>
+			<div class="col-lg-9">
+				<select multiple class="form-control" th:size="${signup}?1:3" th:field="${userForm.roles}" th:disabled="${disableFields}" placeholder="Seleccione un rol"
+				required="required">
+					<option th:each="role :${roles}" th:value="${role.id}" th:text="${role.name}">
+					</option>
+				</select>
+				<div class="alert-danger" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Name Error</div>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label th:text="Empresas" class="col-lg-3 col-form-label form-control-label"></label>
+			<div class="col-lg-9">
+				<select multiple class="form-control" th:size="${signup}?1:3" th:field="${userForm.companies}" th:disabled="${disableFields}" placeholder="Seleccione una empresa"
+				required="required">
+					<option th:each="company :${companyList}" th:value="${company.id}" th:text="${company.companyName}">
+					</option>
+				</select>
+				<div class="alert-danger" th:if="${#fields.hasErrors('companies')}" th:errors="*{companies}">Name Error</div>
+			</div>
+		</div>
+		
+		<!-- <div class="form-group row" > -->
+	   <!--  Descomentar cuando se resuelva la funcionalidad del boton Actualizar contraseña  -->
+		<div class="form-group row" th:if="${editMode==null or editMode==false}"> 
+			<label class="col-lg-3 col-form-label form-control-label">Contraseña</label>
+			<div class="col-lg-9">
+				<input class="form-control" type="password" th:field="${userForm.password}" th:disabled="${disableFields}" placeholder="Escriba una contraseña"
+				required="required">
+				<div class="alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</div>
+			</div>
+		</div>
+		<!-- <div class="form-group row" > -->
+		<div class="form-group row" th:if="${editMode==null or editMode==false}">
+			<label class="col-lg-3 col-form-label form-control-label">Confirma contraseña</label>
+			<div class="col-lg-9">
+				<input class="form-control" type="password" th:field="${userForm.confirmPassword}" th:disabled="${disableFields}" placeholder="Confirme la contraseña anterior"
+				required="required">
+				<div class="alert-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Name Error</div>
+			</div>
+		</div>
+		
+	
+		<div class="form-group row">
+			<div class="col-lg-12 text-center">
+				<a class="btn btn-secondary"  th:href="@{'/userForm/cancel'}">Cancelar</a>
+				
+				<button th:if="${editMode} and ${#authorization.expression('hasRole(''ROLE_USER'')')}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#changePasswordModal">
+  						Cambiar contraseña
+				</button>
+				<input th:if="${editMode==null or editMode==false}" type="submit" class="btn btn-primary"
+					value="Guardar " >
+			</div>
+		</div>
+		<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error MEssage</div>
+		<div class="alert alert-success text-center d-none" id="formSuccess" th:if="${editMode}" >Success MEssage</div>
 </form>
+</div>	
+
+<!-- Button trigger modal -->
+
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePasswordLongModal">Cambio de contraseña de usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="changePasswordForm" th:object="${passwordForm}" method="post" class="form" role="form">
+			<input class="form-control" type="hidden" th:field="${passwordForm.id}">
+			<input  type="hidden" id="currentPassword" th:value="blank"  />
+			<div   class="form-group row">
+				<label class="col-lg-3 col-form-label 	form-control-label">Contraseña actual</label>
+				<div class="col-lg-9">
+					<input class="form-control" type="password" th:field="${passwordForm.currentPassword}">
+					<div class="alert-danger" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}">Password</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-lg-3 col-form-label 	form-control-label">Contraseña nueva</label>
+				<div class="col-lg-9">
+					<input class="form-control" type="password" th:field="${passwordForm.newPassword}">
+					<div class="alert-danger" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">Password</div>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-lg-3 col-form-label form-control-label">Confirma contraseña</label>
+				<div class="col-lg-9">
+					<input class="form-control" type="password" th:field="${passwordForm.confirmPassword}">
+					<div class="alert-danger" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Confirm Password</div>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="alert alert-danger d-none text-center" id="changePasswordError">Error en cambio de contraseña</div>
+			</div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" onClick="submitChangePassword()" class="btn btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+function submitChangePassword(){
+	var params = {};
+	params["id"] = $("#id").val();
+	params["currentPassword"] = $("#currentPassword").val();
+	params["newPassword"] = $("#newPassword").val();
+	params["confirmPassword"] = $("#confirmPassword").val();
+	
+	$.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/editUser/changePassword",
+        data: JSON.stringify(params),
+        dataType: 'text',
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+        	$("#changePasswordForm")[0].reset();
+        	
+        	$("#changePasswordError").addClass( "d-none" );
+        	$("#formSuccess").removeClass( "d-none" );
+            $("#formSuccess").html("Password Actualizado exitosmante!.");
+
+            $('#changePasswordModal').modal('toggle');
+            setTimeout(function(){	$("#formSuccess").hide('slow'); }, 2000);
+        },
+        error: function (e) {
+            $("#changePasswordError").removeClass( "d-none" );
+            $("#formSuccess").addClass( "d-none" );
+            $("#changePasswordError").html(e.responseText);
+        }
+    });
+
+}
+</script>
  <script type="text/javascript">
 (function() {
 'use strict';

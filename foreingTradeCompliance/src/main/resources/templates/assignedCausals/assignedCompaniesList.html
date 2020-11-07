@@ -46,7 +46,7 @@
 					// Formato de datos que se espera en la respuesta
 					dataType : "json",
 					// URL a la que se enviará la solicitud Ajax
-					url : "/impExpTypes/" + companyId,
+					url : "/api/impExpTypes/" + companyId,
 				})
 				.done(
 						function(data, textStatus, jqXHR) {
@@ -55,7 +55,7 @@
 								console.log("La solicitud se ha completado correctamente.");
 								console.log("data " + data);
 								$('#impExpTypeSelect').empty();
-								$.each(data.impExpTypeList,function(key, value) {
+								$.each(data,function(key, value) {
 
 													/* console.log("Key " + key); // Esta es la posicion en el arreglo de JSON
 													console.log("ImpExpType ID "
@@ -102,6 +102,7 @@
 		
 	}
 	
+
 	
 	function impExpTypeChange( impExpTypeId){
 		//alert("impExpTypeId " + impExpTypeId ); 
@@ -134,7 +135,7 @@
 			'</tfoot>';
 		
 		
-		$.each(companyData.impExpTypeList,function(key, value) {
+		$.each(companyData,function(key, value) {
 			console.log("impExpType Id de la lista" + impExpTypeId);
 			
 			if (impExpTypeId == value['id']) {
@@ -164,69 +165,19 @@
 										html_body += '<td> ' + value['causalCumplimiento'] + '</td>';
 										html_body += '</tr>';
 
-										
-										/* $.each(value['instructionList'],function(key,value) {
-															console.log("Instruccion  Key "+ key);
-															console.log("Instruccion Id "+ value['id']);
-															console.log("Instruccion Descripcion "+ value['instructionDescription']);
-
-														}); */
 
 									});
 					
 					
 					html_body += '</tbody>';
 					
-					/* // Aqui agregar los renglones a la tabla.
-					var tabla = document.getElementById("dtAssignedCausals");
-					// extraer las columnas de la tabla desde el JSON
-					// EXTRACT VALUE FOR HTML HEADER. 
-			        // ('Book ID', 'Book Name', 'Category' and 'Price')
-			        var col = [];
-			        for (var i = 0; i < value['causalList'].length; i++) {
-			            for (var key in value['causalList'][i]) {
-			                if (col.indexOf(key) === -1) {
-			                    col.push(key);
-			                }
-			            }
-			        }
-			        
-			        // Create a table.
-			        var tabla = document.createElement("table");
-			        
-			        // Agregar cabeceras a la tabla
-			         // Create table header row using the extracted headers above.
-			        var tr = tabla.insertRow(-1);                   // table row.
-			
-			        for (var i = 0; i < col.length; i++) {
-			            var th = document.createElement("th");      // table header.
-			            th.innerHTML = col[i];
-			            tr.appendChild(th);
-			        }
-        
-					// Agregar renglones a la tabla
-					 // ADD JSON DATA TO THE TABLE AS ROWS.
-			        for (var i = 0; i < value['causalList'].length; i++) {
-			
-			            tr = tabla.insertRow(-1);
-			
-			            for (var j = 0; j < col.length; j++) {
-			                var tabCell = tr.insertCell(-1);
-			                tabCell.innerHTML = value['causalList'][i][col[j]];
-			            }
-			        } */
+					
 					
 			} // FIn If
 			
 			 $('#dtAssignedCausals').html( html_head + html_foot + html_body);
 			
-			// Now, add the newly created table with json data, to a container.
-	       /*  var divShowData = document.getElementById('containerAssignedCausals');
-	        divShowData.innerHTML = "";
-	        divShowData.appendChild(tabla); */
-			
-			
-			
+		
 			
 		});
 		

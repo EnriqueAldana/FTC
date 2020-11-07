@@ -49,7 +49,7 @@ public class EmailConfiguration {
 	}
 
 	
-	 @Value("${spring.mail.host}")
+	 	@Value("${spring.mail.host}")
 	    private String mailServerHost;
 
 	    @Value("${spring.mail.port}")

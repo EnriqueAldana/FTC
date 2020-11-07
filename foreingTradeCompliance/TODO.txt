@@ -1,2 +1,26 @@
 
+Mejoras sin impacto
+
+A) Sustituir codigo de cada html
+Header
+por
+<head th:replace = "common/basicTemplate :: head"></head>
+Los JS
+por
+<div th:replace="common/footerTemplate :: footerJS">...</div>
+
+
+
 1.- Agregar herramientas de salud, monitoreo , etc para la instancia de produccion.
+
+
+2.- Seguridar Autenticacion OK
+3,. Seguridar manejo de sesion OK
+4.- Seguridad manejo de autorizaciones por rol en cada vista.  FALTA TERMINAR CAT Empresas, REVISAR CAUSALES- CHECAR FECHAS OK
+http://cristianruizblog.com/spring-boot-aplicacion-web-parte-9/
+
+5.- Seguridad en servicios REST implementando tokens.  QUEDA SOLO PARA ACCESAR CON USAURIO LOGEADO OK
+https://www.adictosaltrabajo.com/2020/05/21/introduccion-a-spring-security/
+
+https://www.youtube.com/watch?v=3Y21aq-6_OE
+

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.cucoex.dto.ChangePasswordForm;
+import com.cucoex.entity.Company;
 import com.cucoex.entity.Role;
 import com.cucoex.entity.User;
 import com.cucoex.exception.CustomeFieldValidationException;
@@ -14,19 +15,25 @@ import com.cucoex.exception.UsernameOrIdNotFound;
 import com.cucoex.repository.RoleRepository;
 import com.cucoex.schedule.ScheduledTasks;
 import com.cucoex.service.CompanyService;
-import com.cucoex.service.UserService;
+import com.cucoex.service.IUserService;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -47,7 +54,7 @@ public class UserController {
 	private final String TAB_LIST = "listTab";
 	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	
 	@Autowired
 	CompanyService companyService;
@@ -56,10 +63,41 @@ public class UserController {
 	RoleRepository roleRepository;
 	
 	
+	@Autowired BCryptPasswordEncoder bcrypt;
+	
 	// Cata,ogo de usuarios
 	@GetMapping({"/users"})
-	public String getUserList(Model model) {
-		  baseAttributerForUserForm(model, new User(), TAB_LIST );	
+	public String getUserList(HttpSession session,Authentication auth, Model model) {
+		
+		User user = (User) session.getAttribute(auth.getName());
+		Iterable<User> userList = new ArrayList<User>();  
+		Iterable<Company> companyList = new ArrayList<Company>(); 
+		Collection<Role> roles = new ArrayList<Role>();
+		
+		  if (null != user) { 
+			  try {
+					companyList = userService.getAllCompaniesByUserRole(user);
+					userList= userService.getAllUsersByUserRole(user);
+					roles= userService.getAllRolesByUserRole(user);
+					
+				} catch (UsernameOrIdNotFound e1) {
+					
+					e1.printStackTrace();
+				}
+			  	 
+		  }
+		  
+		  	model.addAttribute("userList",userList);
+		  	model.addAttribute("companyList",companyList);
+		  	model.addAttribute("roles",roles);
+			model.addAttribute("editMode",false);
+			model.addAttribute("passwordForm",new ChangePasswordForm());
+			// Solo Admin y Superadmin dan de alta usuarios
+			if(userService.isLoggedUserSUPERADMIN() || userService.isLoggedUserADMIN()) {
+				model.addAttribute("allowToAdd",true);
+			}
+			
+			baseAttributerForUserForm(model, new User(), TAB_LIST );
 		return "user";
 	}
 	
@@ -106,9 +144,6 @@ public class UserController {
 	
 	private void baseAttributerForUserForm(Model model, User user,String activeTab) {
 		model.addAttribute("userForm", user);
-		model.addAttribute("userList", userService.getAllUsers());
-		model.addAttribute("roles",roleRepository.findAll());
-		model.addAttribute("companyList",companyService.getAllCompanies());
 		model.addAttribute(activeTab,"active");
 	}
 	
@@ -134,6 +169,9 @@ public class UserController {
 				Calendar hoy = Calendar.getInstance();
 				user.setCreated(hoy);
 				user.setLastUpdated(hoy);
+				String pass = bcrypt.encode(user.getPassword());
+				user.setPassword(pass);
+				user.setConfirmPassword(pass);
 				userService.createUser(user);
 				baseAttributerForUserForm(model, new User(), TAB_LIST );
 				
@@ -146,20 +184,47 @@ public class UserController {
 				baseAttributerForUserForm(model, user, TAB_FORM );
 			}
 		}
-		return "user";
+		return "redirect:/users";
 	}
 	
-
+	//@PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+	// esta validacion a ivel de metodo genera un error 4040 donde significa que el recurso no esta disponible o no existe
 	@GetMapping("/editUser/{id}")
-	public String getEditUserForm(Model model, @PathVariable(name ="id")Long id)throws Exception{
+	public String getEditUserForm(HttpSession session,Authentication auth,Model model, @PathVariable(name ="id")Long id)throws Exception{
 	
+		
+		User user = (User) session.getAttribute(auth.getName());
+		
 		User userToEdit;
 			userToEdit = userService.getUserById(id);
-			baseAttributerForUserForm(model, userToEdit, TAB_FORM );
-		
-		model.addAttribute("editMode","true");
-		model.addAttribute("passwordForm",new ChangePasswordForm(id));
+			
 
+			Iterable<Company> companyList = new ArrayList<Company>(); 
+			Collection<Role> roles = new ArrayList<Role>();
+			
+			  if (null != userToEdit) { 
+				  try {
+						companyList = userService.getAllCompaniesByUserRole(userToEdit);
+						roles= userService.getAllRolesByUserRole(userToEdit);
+						
+					} catch (UsernameOrIdNotFound e1) {
+						
+						e1.printStackTrace();
+					}
+				  	 
+			  }
+			  
+			  	model.addAttribute("companyList",companyList);
+			  	model.addAttribute("roles",roles);
+			
+		model.addAttribute("editMode",true);
+		model.addAttribute("passwordForm",new ChangePasswordForm(id));
+		// Solo Admin y Superadmin dan de alta usuarios
+		if(userService.isLoggedUserSUPERADMIN() || userService.isLoggedUserADMIN()) {
+			model.addAttribute("allowToAdd",true);
+		}
+		baseAttributerForUserForm(model, userToEdit, TAB_FORM );
+		
 		return "catUser/user-view";
 		
  		
@@ -176,12 +241,12 @@ public class UserController {
 			model.addAttribute("passwordForm",new ChangePasswordForm(user.getId()));
 		}else {
 			try {
-
-				
 				Calendar hoy = Calendar.getInstance();
 				user.setCreated(hoy);
 				user.setLastUpdated(hoy);
-				
+				String pass = bcrypt.encode(user.getPassword());
+				user.setPassword(pass);
+				user.setConfirmPassword(pass);
 				userService.updateUser(user);
 				baseAttributerForUserForm(model, new User(), TAB_LIST );
 			} catch (Exception e) {
@@ -192,14 +257,14 @@ public class UserController {
 				model.addAttribute("passwordForm",new ChangePasswordForm(user.getId()));
 			}
 		}
-		return "user";
+		return "redirect:/users";
 		
 	}
 	
 	@GetMapping("/userForm/cancel")
 	public String cancelEditUser(ModelMap model) {
 		return "redirect:/users";
-		//return "user";
+
 	}
 	
 

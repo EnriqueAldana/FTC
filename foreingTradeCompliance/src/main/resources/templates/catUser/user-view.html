@@ -3,63 +3,49 @@
 <head>
 	<title>Edicion de la información del usuario</title>
 	
-
-
-
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+	
  
-	<!-- <script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js">
-	</script> -->
-		<!-- Los iconos tipo Solid de Fontawesome-->
-	<link rel="stylesheet"
-		href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
-	<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
-	
-	<!-- Nuestro css-->
-	<!-- <link rel="stylesheet" type="text/css" href="static/css/user-form.css"
-		th:href="@{/css/user-form.css}"> -->
-
-	<!-- DATA TABLE -->
-<!-- 	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script> -->
-	
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
-	<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"> -->
+   <!-- Scrool de listas y formas -->
+  <link href="/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+  
+   <link href="/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}">
  
+  <link href="/css/mdb.min.css" rel="stylesheet" th:href="@{/css/mdb.min.css}">
+  
+  <!-- Your custom styles (optional) -->
+  <link href="/css/style.min.css" rel="stylesheet" th:href="@{/css/style.min.css}">
+  
+  
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet" th:href="@{/css/sb-admin-2.min.css}">
+  
+  
+  <!-- Scrool de listas y formas -->
+  <link href="css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
 
 </head>
 
 
 
+<body >
 
 
-<body id="page-top">
-
+		
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-	
 
-        <!-- Begin Page Content User list AQUI LLAMAR USER -VIEW-->
-        <!--
-         <div th:include="user_list.html" th:remove="tag"></div>
-         
-         
-         
-       -->
-     
-       
-      <!--  <div th:include="header_main.html" th:remove="tag"></div> -->
        <div class="card-header">
 						<h4>Edición de la información del usuario</h4>
 		</div>
        <div class="card-body">
 			<div th:include="catUser/UserForm.html" th:remove="tag"></div>
+			
 		</div>
          
-       <div th:if="${editMode}" th:include="catUser/change-password.html" th:remove="tag"></div>
-
+       <div th:if="${editMode==false}" th:include="catUser/change-password.html" th:remove="tag"></div>
+		
          
          
        <!-- <div th:include="catUser/UserCrud.html" th:remove="tag"></div> -->
@@ -77,11 +63,6 @@
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
  
   
   <!-- Your custom scripts (optional) -->
@@ -90,6 +71,8 @@
  
  </script>
  
+
+
 
 </body>
 

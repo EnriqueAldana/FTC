@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cucoex.entity.Causal;
 import com.cucoex.entity.Company;
@@ -75,9 +76,13 @@ public class ComplianceServiceImp implements ComplianceService {
 		
 		Calendar hoy = Calendar.getInstance();
 		Calendar effectiveDateForCompliance = Calendar.getInstance();
+		// LocalDate effectiveDateForCompliance = Utileria.LocalDateTodayDate().plusDays(30L);
 		effectiveDateForCompliance = Utileria.sumarDias(effectiveDateForCompliance, 30);
 		Calendar complianceEvaluationDate = Calendar.getInstance();
+		//LocalDate complianceEvaluationDate = Utileria.LocalDateTodayDate().plusDays(30L);
+		
 		complianceEvaluationDate = Utileria.sumarDias(complianceEvaluationDate, 0);
+		
 		Calendar created = hoy;
 		Calendar updated= hoy;
 		Status status = new Status();
@@ -252,6 +257,7 @@ public class ComplianceServiceImp implements ComplianceService {
 
 	 							
 	@Override
+	@Transactional(readOnly = true)  // Con esto obligamos a que lea siempre de la BD
 	public Iterable<Compliance> getAllComplianceByCompanyAndImpExtTypeAndCausal(Company company ,ImpExpType impExpType,Causal  causal) throws ComplianceException {
 		
 		return complianceRepository.findByCompanyAndImpexptypeAndCausal(company, impExpType,causal);
@@ -408,11 +414,19 @@ public class ComplianceServiceImp implements ComplianceService {
 		
 		Calendar today = Utileria.getCalendarToday();
 		
+		//LocalDate today= Utileria.LocalDateTodayDate();
+		
 		Compliance compliance = getComplianceById(complianceToUpdate.getId());
-		int Today_VS_EffectiveDateForCompliance = Utileria.calendarcompareTo(today, compliance.getEffectiveDateForCompliance());
-		int Today_VS_ComplianceEvaluationDate=Utileria.calendarcompareTo(today, compliance.getComplianceEvaluationDate());
 		
+		  int Today_VS_EffectiveDateForCompliance = Utileria.calendarcompareTo(today,
+		  compliance.getEffectiveDateForCompliance()); int
+		  Today_VS_ComplianceEvaluationDate=Utileria.calendarcompareTo(today,
+		  compliance.getComplianceEvaluationDate());
+		 
+		//int Today_VS_EffectiveDateForCompliance = Utileria.localDateCompareto(today, compliance.getEffectiveDateForCompliance());
+		//int Today_VS_ComplianceEvaluationDate=Utileria.localDateCompareto(today, compliance.getComplianceEvaluationDate());
 		
+	
 		// El dia de hoy es el mismo que el de vigencia y la proxima evaluacion  por lo tanto estaRA VIGENTE
 		if(Today_VS_EffectiveDateForCompliance == 0 && Today_VS_ComplianceEvaluationDate ==0) {
 			if (!compliance.getStatus().getStatusKey().equals(StatusKey.CUMP.toString())) {
@@ -445,6 +459,15 @@ public class ComplianceServiceImp implements ComplianceService {
 				compliance.setStatus(statusINCUMP);
 				updateCompliance(compliance);
 				// Actualizar a INCUM
+			}
+			
+		}
+		
+		if (Today_VS_EffectiveDateForCompliance == 0 ) {
+			if (!compliance.getStatus().getStatusKey().equals(StatusKey.INCUM.toString())) {
+				compliance.setStatus(statusCUMP);
+				updateCompliance(compliance);
+				// Actualizar a CUM
 			}
 			
 		}

@@ -16,11 +16,13 @@ import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.juli.logging.Log;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -53,6 +55,7 @@ import com.cucoex.service.ComplianceService;
 import com.cucoex.service.ComplianceServiceImp;
 import com.cucoex.service.ImpExpTypeService;
 import com.cucoex.service.UserServiceImpl;
+import com.cucoex.util.SessionKeyNames;
 
 import antlr.collections.List;
 import lombok.extern.log4j.Log4j2;
@@ -99,25 +102,31 @@ public class CausalController {
 	
 	
 	  @GetMapping({"/assignedCausals"}) 
-	  public String getAssignedCausalsList(Model model) {
+	  public String getAssignedCausalsList(HttpSession session,Authentication auth, Model model) {
 	  
 	  // Aqui va el numero de la empresa Asignada al usuario // TODO Auto-generated
-	
+		  // MAnejo de sessiones, Agregar al metodo el parametro HttpSession session ya que es un Mapping request
+		  // Fijar datos en la session
+		  // session.setAttribute(Constants.FOO, new Foo());
+		    //...
+		  // Obtener de la  session
+		  //  Foo foo = (Foo) session.getAttribute(Constants.FOO);
+
 	   log.info("Entrando a /assignedCausals" ); 
-	   
-	  User user =
-	  new User(); user.setId(1L);
+	  User user = (User) session.getAttribute(auth.getName());
 	  
-	  
-		  	try {
+	  if (null != user) {
+		  try {
 		  		Company firstCompany = userService.getAllCompaniesByUser(user).stream().findFirst().get();
+		  		model.addAttribute("companyList",userService.getAllCompaniesByUser(user));
 			  	model.addAttribute("impexpTypeList",firstCompany.getImpExpTypeList());
-				model.addAttribute("companyList",userService.getAllCompaniesByUser(user));
+				
 			} catch (UsernameOrIdNotFound e) {
 				
 				e.printStackTrace();
 			}
-
+	  }
+		  	
 	  baseAttributerForAssignedCausalForm(model, new Causal(), TAB_LIST );
 		  	
 	  model.addAttribute("editMode","false");  	

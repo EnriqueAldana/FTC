@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -25,8 +28,14 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +47,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cucoex.dto.CausalCompliance;
+import com.cucoex.dto.CompanyDTO;
 import com.cucoex.dto.EmptyJsonResponse;
-import com.cucoex.dto.ComplianceJSON;
+import com.cucoex.dto.JwtDto;
+import com.cucoex.dto.LoginUser;
+import com.cucoex.dto.Message;
+import com.cucoex.dto.ComplianceDTO;
 import com.cucoex.dto.Dashboard;
 import com.cucoex.entity.Causal;
 import com.cucoex.entity.Company;
@@ -56,7 +69,8 @@ import com.cucoex.service.CausalServiceImpl;
 import com.cucoex.service.CompanyService;
 import com.cucoex.service.ComplianceService;
 import com.cucoex.service.DashboardServiceImpl;
-import com.cucoex.service.UserService;
+import com.cucoex.service.IUserService;
+import com.cucoex.util.SessionKeyNames;
 import com.cucoex.util.StatusKey;
 import com.cucoex.util.Utileria;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,12 +80,14 @@ import lombok.var;
 
 import com.cucoex.repository.StatusRepository;
 import com.cucoex.schedule.ScheduledTasks;
+import com.cucoex.security.JwtProvider;
 
 /**
  * @author enrique
  *
  */
 @RestController
+@RequestMapping("/api")
 public class CuCoExRESTController {
 	
 	private static final org.slf4j.Logger log = LoggerFactory.getLogger(CuCoExRESTController.class);
@@ -89,21 +105,43 @@ public class CuCoExRESTController {
 	StatusRepository statusRepository;
 	
 	@Autowired
-	UserService userService;
+	IUserService userService;
 	
 	@Autowired
 	DashboardServiceImpl DashboradService;
 	
-	@GetMapping(value = "impExpTypes/{companyId}")
-    public Company impExpTypes(@PathVariable Long companyId) {
-		Company ret = null;
+	 @Autowired
+	    AuthenticationManager authenticationManager;
+
+	    @Autowired
+	    JwtProvider jwtProvider;
+	    
+	    @Autowired
+	    CompanyDTO companyDTO;
+	    
+	@PostMapping("/login")
+    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUser loginUser, BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+            return new ResponseEntity(new Message("campos mal puestos"), HttpStatus.BAD_REQUEST);
+        Authentication authentication =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtProvider.generateToken(authentication);
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+        return new ResponseEntity(jwtDto, HttpStatus.OK);
+    }
+	
+	@GetMapping(value = "impExpTypes/{companyId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<ImpExpType> impExpTypes(@PathVariable Long companyId) {
+		CompanyDTO ret = companyDTO;
 		
 		Company companyFounded = new Company();
 		try {
 			companyFounded = companyService.getCompanyById(companyId);
 		
 			if (!companyFounded.equals(null)) {
-				ret= companyFounded;
+				CompanyEntityToDTO(companyFounded, ret);
 			}
 			
 			
@@ -111,15 +149,15 @@ public class CuCoExRESTController {
 			
 			log.error(e1.getMessage());
 		}
-		return ret;
+		return ret.getImpExpTypeList();
 
       
     }
 	
 	
 	@GetMapping(value = "getCompliance/{companyId}/{impExpTypeId}/{causalId}")
-    public Compliance getCompliance(@PathVariable(name ="companyId")Long companyId, @PathVariable(name ="impExpTypeId")Long impExpTypeId, @PathVariable(name ="causalId")Long causalId)throws Exception{
-		Compliance ret = null;
+    public ComplianceDTO getCompliance(@PathVariable(name ="companyId")Long companyId, @PathVariable(name ="impExpTypeId")Long impExpTypeId, @PathVariable(name ="causalId")Long causalId)throws Exception{
+		ComplianceDTO ret = new ComplianceDTO();
 		
 		Company companyFounded = new Company();
 		companyFounded.setId(companyId);
@@ -127,6 +165,7 @@ public class CuCoExRESTController {
 		impExpTypeFounded.setId(impExpTypeId);
 		Compliance complianceFounded = new Compliance();
 		Causal causalFounded = new Causal();
+		causalFounded.setId(causalId);
 		CausalCompliance causalCompliance= new CausalCompliance();
 		
 		
@@ -147,15 +186,19 @@ public class CuCoExRESTController {
 			}
 			
 		}
+		complianceFounded.setCausal(causalFounded);
+		complianceFounded.setCompany(companyFounded);
+		complianceFounded.setImpexptype(impExpTypeFounded);
+		ComplianceEntityToDTO(complianceFounded,ret);
 		
-		return complianceFounded;
+		return ret;
 
       
     }
 	
 
 	@GetMapping(value = "getDashboardData")
-    public Dashboard getDashboard()throws Exception{
+    public Dashboard getDashboard(HttpSession session,Authentication auth)throws Exception{
 		Dashboard ret = new Dashboard();;
 		
 		Long totalCausal=0L;
@@ -163,10 +206,11 @@ public class CuCoExRESTController {
 		Long totalCausalNonCompliance=0L;
 		Long percentageCompliance=0L;
 		Long totalCausalesXIncumplir=0L;
-		// ToDo . Aqui bajar la Id del usuario logeado TODO
-		User user= new User();
-		user = userService.getUserById(1L);
+	
+		 User user = (User) session.getAttribute(auth.getName());
+		
 		if(null != user) {
+			
 			totalCausal=DashboradService.getTotalCausalsByUserId(user.getId());
 			totalCausalCompliance= DashboradService.getTotalCausalsComplianceByUserIdAndStatus(user.getId(),StatusKey.CUMP.toString());
 			totalCausalesXIncumplir= DashboradService.getTotalCausalsComplianceByUserIdAndStatus(user.getId(),StatusKey.XINCUM.toString());
@@ -220,7 +264,7 @@ public class CuCoExRESTController {
 			 String value = entry.getValue();
 			
 			 ObjectMapper mapper = new ObjectMapper();
-			 ComplianceJSON compliance=null;
+			 ComplianceDTO compliance=null;
 			 Compliance complianceFounded = new Compliance();
 			 Status status = new Status();
 			 Calendar calendar = Calendar.getInstance();
@@ -228,7 +272,7 @@ public class CuCoExRESTController {
 			 
 			 
 				try {
-					 compliance = mapper.readValue(key, ComplianceJSON.class);
+					 compliance = mapper.readValue(key, ComplianceDTO.class);
 				} catch (IOException e) {
 					
 					log.error(e.getMessage());
@@ -245,18 +289,18 @@ public class CuCoExRESTController {
 						}else {
 							status= statusRepository.findByStatusKey("CUMP");
 						}
-						Date hoy = new Date();
-						Date complianceEvaluationDate=Utileria.convertStringToDate("dd-MM-yyyy", compliance.getComplianceEvaluationDate());
-								
-						Date effectiveDateForCompliance = Utileria.convertStringToDate("dd-MM-yyyy", compliance.getEffectiveDateForCompliance());
-
+						
 						complianceFounded.setStatus(status);
-						Calendar localDateEffectiveDateForCompliance= Utileria.dateToCalendar(effectiveDateForCompliance);		
-						Calendar localDateComplianceEvaluationDate= Utileria.dateToCalendar(complianceEvaluationDate);
+						
+						  Calendar localDateEffectiveDateForCompliance=Utileria.convertStringToCalendar("dd-MM-yyyy",compliance.getEffectiveDateForCompliance()); 
+						  Calendar localDateComplianceEvaluationDate= Utileria.convertStringToCalendar("dd-MM-yyyy",compliance.getComplianceEvaluationDate());
+						 
+						//LocalDate localDateEffectiveDateForCompliance= Utileria.createToLocalDateFromString_yyyy_MM_dd(compliance.getEffectiveDateForCompliance());
+						//LocalDate localDateComplianceEvaluationDate= Utileria.createToLocalDateFromString_yyyy_MM_dd(compliance.getComplianceEvaluationDate());
 						
 						complianceFounded.setEffectiveDateForCompliance(localDateEffectiveDateForCompliance);
 						complianceFounded.setComplianceEvaluationDate(localDateComplianceEvaluationDate);
-						complianceFounded.setUpdated(Utileria.dateToCalendar(hoy));
+						complianceFounded.setUpdated(Utileria.getCalendarToday());
 						complianceService.updateCompliance(complianceFounded);
 						
 						// Mandar llamar al monitor para que actualice estatus en funcion de las fechas
@@ -303,4 +347,49 @@ public class CuCoExRESTController {
 		
 	}
 
+	private CompanyDTO CompanyEntityToDTO(Company companyFrom, CompanyDTO companyTo) {
+		companyTo.setAlertMessage(companyFrom.getAlertMessage());
+		companyTo.setAreAlertsEnabled(companyFrom.getAreAlertsEnabled().toString());
+		companyTo.setAreAlertsEnabledToAdministrators(companyFrom.getAreAlertsEnabledToAdministrators().toString());
+		companyTo.setAreAlertsEnabledToSupervisors(companyFrom.getAreAlertsEnabledToSupervisors().toString());
+		companyTo.setAreAlertsEnabledToUsers(companyFrom.getAreAlertsEnabledToUsers().toString());
+		companyTo.setCompanyEmail(companyFrom.getCompanyEmail());
+		companyTo.setCompanyId(companyFrom.getCompanyId());
+		companyTo.setCompanyName(companyFrom.getCompanyName());
+		companyTo.setCompanyPhone(companyFrom.getCompanyPhone());
+		companyTo.setCompanyWeb(companyFrom.getCompanyWeb());
+		companyTo.setCreated(companyFrom.getCreated().toString());
+		companyTo.setDaysToClimbAlertsToAdministrator(companyFrom.getDaysToClimbAlertsToAdministrator().toString());
+		companyTo.setDaysToClimbAlertsToSupervisor(companyFrom.getDaysToClimbAlertsToSupervisor().toString());
+		companyTo.setDaysToDefault(companyFrom.getDaysToDefault().toString());
+		companyTo.setFrequencyToRunMonitor(companyFrom.getFrequencyToRunMonitor().toString());
+		companyTo.setId(companyFrom.getId().toString());
+		companyTo.setImpExpTypeList(companyFrom.getImpExpTypeList());
+		companyTo.setIsEnabled(companyFrom.getIsEnabled().toString());
+		companyTo.setUpdated(companyFrom.getUpdated().toString());
+		companyTo.setUsers(companyFrom.getUsers());
+
+		return companyTo;
+		
+	}
+	
+	private ComplianceDTO ComplianceEntityToDTO(Compliance complianceFrom, ComplianceDTO complianceTo) {
+		
+		complianceTo.setCausalCumplimiento(complianceFrom.getCausal().getCausalCumplimiento());
+		complianceTo.setCausalDescription(complianceFrom.getCausal().getCausalDescription());
+		complianceTo.setCausalId(complianceFrom.getCausal().getId().toString());
+		complianceTo.setCompanyId(complianceFrom.getCompany().getId().toString());
+		complianceTo.setComplianceEvaluationDate(Utileria.convertCalendarToString_dd_mm_yyyy(complianceFrom.getComplianceEvaluationDate()));
+		complianceTo.setEffectiveDateForCompliance(Utileria.convertCalendarToString_dd_mm_yyyy(complianceFrom.getEffectiveDateForCompliance()));
+		complianceTo.setCreated(Utileria.convertCalendarToString_dd_mm_yyyy(complianceFrom.getCreated()));
+		complianceTo.setUpdated(Utileria.convertCalendarToString_dd_mm_yyyy(complianceFrom.getUpdated()));
+		complianceTo.setId(complianceFrom.getId().toString());
+		complianceTo.setImpExpTypeId(complianceFrom.getImpexptype().getId().toString());
+		complianceTo.setInstructionList(complianceFrom.getCausal().getInstructionList());
+		complianceTo.setIsCompliance(String.valueOf(complianceFrom.getIsCompliance()));
+		complianceTo.setStatusId(complianceFrom.getStatus().getId().toString());
+
+		return complianceTo;
+		
+	}
 }

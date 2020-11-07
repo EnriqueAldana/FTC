@@ -10,8 +10,11 @@
         </div>
         <div class="modal-body">Seleccione "Salir" si Ud. está listo para dejar la sesión.</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Regresar</button>
-          <a class="btn btn-primary" href="login.html">Salir</a>
+          		<button class="btn btn-secondary" type="button" data-dismiss="modal">Regresar</button>
+          <form th:action="@{/logout}" method="post">
+          		<button class="btn btn-secondary" type="submit" data-dismiss="modal">Salir</button>
+          </form>
+          
         </div>
       </div>
     </div>
