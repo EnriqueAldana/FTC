@@ -75,11 +75,10 @@
             <a class="collapse-item" href="assignedCausals">Causales Asignadas</a>
             
             <span th:if="${#authorization.expression('hasRole(''ROLE_SUPERADMIN'')')}">
-    			<<h6 class="collapse-header">Monitor de causales</h6>
+    			<h6 class="collapse-header">Monitor de causales</h6>
             	<a class="collapse-item" href="/runMonitor">Ejecución del monitor</a>
     		</span>	
-            
-           
+  
           </div>
         </div>
       </li>
